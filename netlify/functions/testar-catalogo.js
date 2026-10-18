@@ -1,36 +1,36 @@
 
-exports.handler = async () => {
+export default async () => {
   const token = process.env.META_CATALOG_ACCESS_TOKEN;
+  const catalogId = "2143195132981158";
 
   if (!token) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ erro: "Token não configurado" })
-    };
+    return Response.json(
+      { erro: "Token não configurado" },
+      { status: 500 }
+    );
   }
 
   try {
-    const resposta = await fetch(
-      "https://graph.facebook.com/v26.0/2143195132981158?fields=id,name",
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
+    const url = new URL(
+      `https://graph.facebook.com/v24.0/${catalogId}`
     );
+    url.searchParams.set("fields", "id,name");
+    url.searchParams.set("access_token", token);
 
-    return {
-      statusCode: resposta.status,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        conexao: resposta.ok ? "OK" : "Erro",
-        status: resposta.status
-      })
-    };
+    const resposta = await fetch(url);
+    const dados = await resposta.json();
+
+    return Response.json({
+      conexao: resposta.ok ? "OK" : "ERRO",
+      status: resposta.status,
+      catalogo: resposta.ok ? dados : undefined,
+      erro: resposta.ok ? undefined : dados.error?.message
+    }, { status: resposta.ok ? 200 : 502 });
+
   } catch {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ erro: "Falha na conexão" })
-    };
+    return Response.json(
+      { erro: "Falha na consulta à Meta" },
+      { status: 502 }
+    );
   }
 };

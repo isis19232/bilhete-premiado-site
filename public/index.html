@@ -1,151 +1,94 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#062611">
   <title>Bilhete Premiado | Sua sorte começa aqui</title>
-  <meta name="description" content="Conheça o Bilhete Premiado. Sorteios de segunda a sábado, com prêmio inicial de R$ 500 e teto de R$ 15.000.">
-
+  <meta name="description" content="Conheça o Bilhete Premiado. Quatro sorteios diários de segunda a sábado, prêmio inicial de R$ 500 e limite de R$ 15.000.">
   <script>
-    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){
-    n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window,document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init','3403639113154818');
-    fbq('track','PageView');
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init','3403639113154818');fbq('track','PageView');
   </script>
-
+  <noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=3403639113154818&amp;ev=PageView&amp;noscript=1"></noscript>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   <header class="nav">
-    <a class="brand" href="#inicio">🍀 BILHETE PREMIADO</a>
-    <nav>
+    <a class="brand" href="#inicio" aria-label="Bilhete Premiado, início"><span class="brand-clover">☘</span><span>BILHETE<br><b>PREMIADO</b></span></a>
+    <nav aria-label="Navegação principal">
       <a href="#como-funciona">Como funciona</a>
-      <a href="#vantagens">Informações</a>
+      <a href="#informacoes">Informações</a>
       <a href="#faq">Dúvidas</a>
-      <a href="#participar" class="btn btn-small">Contato</a>
+      <a href="#contato" class="nav-contact">◉ Fale conosco</a>
     </nav>
   </header>
-
   <main>
-    
-<section class="hero hero-premium" id="inicio">
-  <div class="hero-copy">
-    <p class="eyebrow">✦ SUA SORTE COMEÇA AQUI ✦</p>
-
-    <p class="prize-label">PRÊMIO INICIAL</p>
-    <h1 class="prize">
-      <span class="currency">R$</span>
-      <strong>500</strong>
-      <span class="cents">,00</span>
-    </h1>
-
-    <p class="accumulation">
-      ACUMULA ATÉ SAIR UM GANHADOR OU ATINGIR
-      <b>R$ 15.000,00</b>
-    </p>
-
-    <h2 class="hero-title">
-      SUA SORTE TEM<br>
-      <span>DATA MARCADA!</span>
-    </h2>
-
-    <p class="lead">
-      Quatro sorteios diários, de segunda a sábado.
-      Conheça o Bilhete Premiado e acompanhe os resultados!
-    </p>
-
-    <div class="hero-actions">
-      <a href="#participar" class="btn">
-        ☎ FALE COM NOSSA EQUIPE
-      </a>
-      <a href="#como-funciona" class="btn btn-ghost">
-        COMO FUNCIONA →
-      </a>
-    </div>
-  </div>
-
-  <div class="hero-art">
-    <div class="glow"></div>
-    <img
-      src="/mascote.png.JPG"
-      alt="Mascote do Bilhete Premiado"
-      class="mascote-site"
-    >
-  </div>
-
-  <div class="hero-stats">
-    <div>
-      <span class="stat-icon">🪙</span>
-      <div>
-        <small>BILHETE APENAS</small>
-        <strong>R$ 2,50</strong>
+    <section class="hero" id="inicio">
+      <div class="hero-copy">
+        <p class="eyebrow">SORTEIOS SIMPLES E TRANSPARENTES</p>
+        <p class="prize-label">PRÊMIO INICIAL</p>
+        <h1 class="prize" aria-label="Prêmio inicial de quinhentos reais"><span class="currency">R$</span><strong>500</strong><span class="cents">,00</span></h1>
+        <p class="accumulation">ACUMULA ATÉ SAIR UM GANHADOR OU ATINGIR <strong>R$ 15.000,00</strong></p>
+        <h2 class="hero-title">SUA SORTE TEM <span>DATA MARCADA!</span></h2>
+        <p class="lead">Quatro sorteios diários, de segunda a sábado. Conheça o Bilhete Premiado e acompanhe os resultados!</p>
+        <div class="hero-actions">
+          <a class="btn btn-gold" href="#contato">◉ FALE COM NOSSA EQUIPE</a>
+          <a class="btn btn-outline" href="#como-funciona">COMO FUNCIONA <span aria-hidden="true">→</span></a>
+        </div>
       </div>
-    </div>
-
-    <div>
-      <span class="stat-icon">📅</span>
-      <div>
-        <small>4 SORTEIOS DIÁRIOS</small>
-        <strong>SEG A SÁB</strong>
+      <div class="hero-art">
+        <div class="glow" aria-hidden="true"></div>
+        <img src="/mascote.png.JPG" alt="Mascote verde do Bilhete Premiado" class="mascote-site" fetchpriority="high">
       </div>
-    </div>
-
-    <div>
-      <span class="stat-icon">🏆</span>
-      <div>
-        <small>PRÊMIO MÁXIMO</small>
-        <strong>R$ 15.000,00</strong>
+      <div class="hero-stats" aria-label="Informações principais">
+        <div class="stat"><span class="stat-icon" aria-hidden="true">🪙</span><div><small>BILHETE APENAS</small><strong>R$ 2,50</strong></div></div>
+        <div class="stat"><span class="stat-icon" aria-hidden="true">📅</span><div><small>4 SORTEIOS DIÁRIOS</small><strong>SEG A SÁB</strong></div></div>
+        <div class="stat"><span class="stat-icon" aria-hidden="true">🏆</span><div><small>PRÊMIO MÁXIMO</small><strong>R$ 15.000,00</strong></div></div>
       </div>
-    </div>
-  </div>
-</section>
-
+    </section>
     <section id="como-funciona" class="section">
-      <p class="eyebrow">CONHEÇA NOSSA DINÂMICA</p>
-      <h2>COMO FUNCIONA</h2>
+      <div class="section-inner"><p class="section-kicker">CONHEÇA NOSSA DINÂMICA</p><h2>COMO FUNCIONA</h2>
       <ol class="steps">
         <li><span class="num">01</span><h3>Conheça</h3><p>Confira as informações e regras de cada sorteio.</p></li>
-        <li><span class="num">02</span><h3>Atendimento</h3><p>Tire suas dúvidas com nossa equipe ou com os representantes.</p></li>
+        <li><span class="num">02</span><h3>Fale conosco</h3><p>Tire suas dúvidas pelo nosso WhatsApp.</p></li>
         <li><span class="num">03</span><h3>Acompanhe</h3><p>Confira os resultados divulgados nos canais oficiais.</p></li>
-      </ol>
+      </ol></div>
     </section>
-
-    <section id="vantagens" class="section features">
-      <div class="feature"><h3>🍀 SORTEIOS FREQUENTES</h3><p>De segunda a sábado.</p></div>
-      <div class="feature"><h3>🏆 PRÊMIO ACUMULATIVO</h3><p>Começa em R$ 500 e acumula até o limite de R$ 15.000.</p></div>
-      <div class="feature"><h3>📲 ATENDIMENTO</h3><p>Informações com a equipe pelo WhatsApp e representantes.</p></div>
+    <section id="informacoes" class="section section-info">
+      <div class="section-inner"><p class="section-kicker">SAIBA MAIS</p><h2>INFORMAÇÕES DOS SORTEIOS</h2>
+      <div class="features">
+        <article class="feature"><span aria-hidden="true">📅</span><h3>4 SORTEIOS DIÁRIOS</h3><p>De segunda a sábado, conforme o calendário oficial.</p></article>
+        <article class="feature"><span aria-hidden="true">🏆</span><h3>PRÊMIO ACUMULATIVO</h3><p>Começa em R$ 500 e acumula até sair um ganhador ou atingir R$ 15.000.</p></article>
+        <article class="feature"><span aria-hidden="true">🍀</span><h3>SORTEIOS DE APROXIMAÇÃO</h3><p>Número imediatamente anterior ou posterior ao sorteado no dia, com prêmios de R$ 100 a R$ 200, conforme regulamento.</p></article>
+      </div></div>
     </section>
-
-    <section id="faq" class="section faq">
-      <h2>DÚVIDAS FREQUENTES</h2>
-      <details><summary>Qual é o valor inicial do prêmio?</summary><p>R$ 500,00, com acumulação diária conforme as regras até o teto de R$ 15.000,00.</p></details>
-      <details><summary>Quando acontecem os sorteios?</summary><p>De segunda a sábado, conforme o calendário oficial.</p></details>
+    <section id="faq" class="section"><div class="section-inner faq"><p class="section-kicker">PRECISA DE AJUDA?</p><h2>DÚVIDAS FREQUENTES</h2>
+      <details><summary>Qual é o valor inicial do prêmio?</summary><p>R$ 500,00. O prêmio acumula conforme as regras até sair um ganhador ou atingir R$ 15.000,00.</p></details>
+      <details><summary>Quando acontecem os sorteios?</summary><p>São quatro sorteios diários, de segunda a sábado, conforme o calendário oficial.</p></details>
+      <details><summary>Como funcionam os sorteios de aproximação?</summary><p>Contemplam o número imediatamente anterior ou posterior ao sorteado, com valores de R$ 100 a R$ 200, observadas as regras do sorteio.</p></details>
       <details><summary>Onde encontro os resultados?</summary><p>Nos canais oficiais do Bilhete Premiado.</p></details>
-      <details><summary>Quem pode participar?</summary><p>Maiores de 18 anos, observadas as regras e autorizações aplicáveis.</p></details>
-    </section>
-
-    <section id="participar" class="cta">
-      <p class="eyebrow">BILHETE PREMIADO</p>
-      <h2>QUER SABER MAIS?</h2>
-      <p>Entre em contato para conhecer as informações e os canais de atendimento.</p>
-      <a href="https://wa.me/bilhetepremiado__" class="btn btn-light" target="_blank" rel="noopener noreferrer">FALAR PELO WHATSAPP</a>
-    </section>
+      <details><summary>Quem pode participar?</summary><p>Maiores de 18 anos, conforme regulamento e autorizações aplicáveis.</p></details>
+    </div></section>
+    <section id="contato" class="cta"><p class="section-kicker">BILHETE PREMIADO</p><h2>QUER SABER MAIS?</h2><p>Tire suas dúvidas com nossa equipe pelo WhatsApp.</p><a href="#" class="btn btn-gold" id="whatsapp-link">FALAR PELO WHATSAPP</a><p class="contact-note">Configure o número oficial de WhatsApp antes de publicar este botão.</p></section>
   </main>
-
-  <footer class="footer">
-    <p>© <span id="year">2026</span> Bilhete Premiado. Conteúdo informativo. Proibido para menores de 18 anos.</p>
-  </footer>
-
+  <footer class="footer">© <span id="year">2026</span> Bilhete Premiado. Conteúdo informativo. Proibido para menores de 18 anos.</footer>
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+    // Substitua pelo número oficial com DDI 55, DDD e número, apenas dígitos.
+    const WHATSAPP_NUMERO = '';
+    const whatsapp = document.getElementById('whatsapp-link');
+    if (WHATSAPP_NUMERO) {
+      whatsapp.href = 'https://wa.me/' + WHATSAPP_NUMERO;
+      whatsapp.target = '_blank';
+      whatsapp.rel = 'noopener noreferrer';
+      document.querySelector('.contact-note').hidden = true;
+    } else {
+      whatsapp.addEventListener('click', function(e) { e.preventDefault(); alert('WhatsApp em configuração.'); });
+    }
   </script>
 </body>
 </html>

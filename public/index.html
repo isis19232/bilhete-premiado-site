@@ -1,109 +1,105 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bilhete Premiado — Sua chance de ganhar</title>
-  <meta name="description" content="Bilhete Premiado: participe, acompanhe e concorra a prêmios de forma simples e transparente." />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bilhete Premiado | Sua sorte começa aqui</title>
+  <meta name="description" content="Conheça o Bilhete Premiado. Sorteios de segunda a sábado, com prêmio inicial de R$ 500 e teto de R$ 15.000.">
 
-  <!-- Meta Pixel Code -->
   <script>
-  !function(f,b,e,v,n,t,s)
-  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-  n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];
-  s.parentNode.insertBefore(t,s)}(window, document,'script',
-  'https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init', '3403639113154818');
-  fbq('track', 'PageView');
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){
+    n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init','3403639113154818');
+    fbq('track','PageView');
   </script>
-  <noscript><img height="1" width="1" style="display:none"
-  src="https://www.facebook.com/tr?id=3403639113154818&ev=PageView&noscript=1"
-  /></noscript>
-  <!-- End Meta Pixel Code -->
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   <header class="nav">
-    <a href="#" class="brand"><span class="brand-mark">★</span> Bilhete Premiado</a>
+    <a class="brand" href="#inicio">🍀 BILHETE PREMIADO</a>
     <nav>
       <a href="#como-funciona">Como funciona</a>
-      <a href="#vantagens">Vantagens</a>
+      <a href="#vantagens">Informações</a>
       <a href="#faq">Dúvidas</a>
-      <a href="#participar" class="btn btn-small">Participar</a>
+      <a href="#participar" class="btn btn-small">Contato</a>
     </nav>
   </header>
 
   <main>
-    <section class="hero">
+    <section class="hero" id="inicio">
       <div class="hero-copy">
-        <p class="eyebrow">Sorteios simples e transparentes</p>
-        <h1>Seu próximo bilhete pode ser o <em>premiado</em>.</h1>
-        <p class="lead">Escolha seus números, garanta sua participação em poucos cliques e acompanhe cada sorteio de perto — tudo pelo celular.</p>
+        <p class="eyebrow">🍀 SUA SORTE COMEÇA AQUI</p>
+        <p class="prize-label">PRÊMIO INICIAL</p>
+        <h1 class="prize">R$ <strong>500</strong><span>,00</span></h1>
+        <p class="accumulation">ACUMULA DIARIAMENTE ATÉ <b>R$ 15.000</b></p>
+        <h2>SUA SORTE TEM<br>DATA MARCADA!</h2>
+        <p class="lead">Sorteios de segunda a sábado. Conheça o Bilhete Premiado e acompanhe as novidades.</p>
+
+        <div class="hero-stats">
+          <div><small>BILHETE</small><strong>R$ 2,50</strong></div>
+          <div><small>SORTEIOS</small><strong>SEG A SÁB</strong></div>
+          <div><small>PRÊMIO MÁXIMO</small><strong>R$ 15 MIL</strong></div>
+        </div>
+
         <div class="hero-actions">
-          <a href="#participar" class="btn">Quero participar</a>
-          <a href="#como-funciona" class="btn btn-ghost">Ver como funciona</a>
+          <a href="#participar" class="btn">FALE COM NOSSA EQUIPE</a>
+          <a href="#como-funciona" class="btn btn-ghost">SAIBA MAIS</a>
         </div>
       </div>
 
-<img src="/mascote.png.JPG" alt="Mascote do Bilhete Premiado" class="mascote-site">
-
-      <div class="ticket" aria-hidden="true">
-        <div class="ticket-top">
-          <span>BILHETE Nº</span>
-          <strong>0428-77</strong>
-        </div>
-        <div class="ticket-numbers">
-          <span>07</span><span>13</span><span>21</span><span>34</span><span>42</span><span>58</span>
-        </div>
-        <div class="ticket-perf"></div>
-        <div class="ticket-bottom">
-          <span>Próximo sorteio</span>
-          <strong>Sábado · 20h</strong>
-        </div>
-        <div class="stamp">PREMIADO</div>
+      <div class="hero-art">
+        <div class="glow"></div>
+        <img src="/mascote.png.JPG" alt="Mascote do Bilhete Premiado" class="mascote-site">
       </div>
     </section>
 
     <section id="como-funciona" class="section">
-      <h2>Como funciona</h2>
+      <p class="eyebrow">CONHEÇA NOSSA DINÂMICA</p>
+      <h2>COMO FUNCIONA</h2>
       <ol class="steps">
-        <li><span class="num">1</span><h3>Escolha</h3><p>Selecione seus números da sorte ou deixe que a gente escolha por você.</p></li>
-        <li><span class="num">2</span><h3>Garanta</h3><p>Confirme sua participação com pagamento rápido e seguro.</p></li>
-        <li><span class="num">3</span><h3>Acompanhe</h3><p>Receba o resultado e fique por dentro de cada sorteio em tempo real.</p></li>
+        <li><span class="num">01</span><h3>Conheça</h3><p>Confira as informações e regras de cada sorteio.</p></li>
+        <li><span class="num">02</span><h3>Atendimento</h3><p>Tire suas dúvidas com nossa equipe ou com os representantes.</p></li>
+        <li><span class="num">03</span><h3>Acompanhe</h3><p>Confira os resultados divulgados nos canais oficiais.</p></li>
       </ol>
     </section>
 
     <section id="vantagens" class="section features">
-      <div class="feature"><h3>Transparência</h3><p>Regras claras e resultados divulgados publicamente.</p></div>
-      <div class="feature"><h3>Praticidade</h3><p>Participe de onde estiver, direto do seu celular.</p></div>
-      <div class="feature"><h3>Atendimento</h3><p>Suporte humano para tirar qualquer dúvida.</p></div>
+      <div class="feature"><h3>🍀 SORTEIOS FREQUENTES</h3><p>De segunda a sábado.</p></div>
+      <div class="feature"><h3>🏆 PRÊMIO ACUMULATIVO</h3><p>Começa em R$ 500 e acumula até o limite de R$ 15.000.</p></div>
+      <div class="feature"><h3>📲 ATENDIMENTO</h3><p>Informações com a equipe pelo WhatsApp e representantes.</p></div>
     </section>
 
     <section id="faq" class="section faq">
-      <h2>Dúvidas frequentes</h2>
-      <details><summary>Como sei se meu bilhete foi premiado?</summary><p>Divulgamos os resultados logo após cada sorteio e avisamos os ganhadores diretamente.</p></details>
-      <details><summary>Posso participar com mais de um bilhete?</summary><p>Sim. Quanto mais bilhetes, mais chances você tem.</p></details>
-      <details><summary>Quem pode participar?</summary><p>Maiores de 18 anos, conforme o regulamento de cada sorteio.</p></details>
+      <h2>DÚVIDAS FREQUENTES</h2>
+      <details><summary>Qual é o valor inicial do prêmio?</summary><p>R$ 500,00, com acumulação diária conforme as regras até o teto de R$ 15.000,00.</p></details>
+      <details><summary>Quando acontecem os sorteios?</summary><p>De segunda a sábado, conforme o calendário oficial.</p></details>
+      <details><summary>Onde encontro os resultados?</summary><p>Nos canais oficiais do Bilhete Premiado.</p></details>
+      <details><summary>Quem pode participar?</summary><p>Maiores de 18 anos, observadas as regras e autorizações aplicáveis.</p></details>
     </section>
 
     <section id="participar" class="cta">
-      <h2>Pronto para tentar a sorte?</h2>
-      <p>Garanta seu bilhete antes do próximo sorteio.</p>
-      <a href="https://wa.me/bilhetepremiado__" class="btn btn-light" target="_blank" rel="noopener noreferrer" onclick="if(window.fbq) fbq('trackCustom','CliqueWhatsApp');">Falar pelo WhatsApp</a>
+      <p class="eyebrow">BILHETE PREMIADO</p>
+      <h2>QUER SABER MAIS?</h2>
+      <p>Entre em contato para conhecer as informações e os canais de atendimento.</p>
+      <a href="https://wa.me/bilhetepremiado__" class="btn btn-light" target="_blank" rel="noopener noreferrer">FALAR PELO WHATSAPP</a>
     </section>
   </main>
 
   <footer class="footer">
-    <p>© <span id="year">2026</span> Bilhete Premiado. Jogue com responsabilidade. Proibido para menores de 18 anos.</p>
+    <p>© <span id="year">2026</span> Bilhete Premiado. Conteúdo informativo. Proibido para menores de 18 anos.</p>
   </footer>
 
-  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>

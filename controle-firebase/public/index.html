@@ -1,0 +1,1582 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Bilhete Premiado · Controle de vendas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700&family=Karla:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Bilhete Premiado · controle de vendas
+   Paleta: papel verde-acinzentado, tinta pinheiro, dourado "premiado" */
+:root {
+  color-scheme: light;
+  --paper:#EAEFEC; --surface:#FFFFFF; --surface-2:#F3F7F5; --surface-3:#E5EBE8;
+  --ink:#0F2620; --ink-2:#4C625B; --ink-3:#7B8F88; --line:#D3DCD8; --line-2:#BFCCC6;
+  --accent:#0E6B51; --accent-2:#0A5540; --accent-ink:#FFFFFF; --accent-soft:#DDEDE6;
+  --gold:#A9750A; --gold-soft:#FAF0D8; --gold-line:#E8D5A3;
+  --pos:#14663F; --neg:#A32219; --warn:#A9750A;
+  --shadow:0 1px 2px rgba(15,38,32,.06),0 8px 24px -12px rgba(15,38,32,.18);
+  --shadow-lift:0 2px 6px rgba(15,38,32,.10),0 18px 40px -18px rgba(15,38,32,.30);
+  --r-sm:8px; --r-md:14px; --r-lg:20px;
+  --font-display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --font-body:"Karla",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:#0B1310; --surface:#121D19; --surface-2:#17241F; --surface-3:#1E2E28;
+    --ink:#E3EDE8; --ink-2:#A2B5AE; --ink-3:#788B84; --line:#24342D; --line-2:#31443C;
+    --accent:#2FA37C; --accent-2:#46BC93; --accent-ink:#04140F; --accent-soft:#123126;
+    --gold:#E4B65A; --gold-soft:#241D0E; --gold-line:#4A3A18;
+    --pos:#4FC98C; --neg:#FF7A6C; --warn:#E4B65A;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.6);
+    --shadow-lift:0 2px 6px rgba(0,0,0,.45),0 18px 40px -18px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"] {
+  --paper:#0B1310; --surface:#121D19; --surface-2:#17241F; --surface-3:#1E2E28;
+  --ink:#E3EDE8; --ink-2:#A2B5AE; --ink-3:#788B84; --line:#24342D; --line-2:#31443C;
+  --accent:#2FA37C; --accent-2:#46BC93; --accent-ink:#04140F; --accent-soft:#123126;
+  --gold:#E4B65A; --gold-soft:#241D0E; --gold-line:#4A3A18;
+  --pos:#4FC98C; --neg:#FF7A6C; --warn:#E4B65A;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.6);
+  --shadow-lift:0 2px 6px rgba(0,0,0,.45),0 18px 40px -18px rgba(0,0,0,.7);
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body { margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); font-size:15px; line-height:1.45; -webkit-text-size-adjust:100%; -webkit-tap-highlight-color:transparent; }
+h1,h2,h3 { font-family:var(--font-display); font-weight:700; margin:0; text-wrap:balance; letter-spacing:-.012em; }
+.num { font-family:var(--font-mono); font-variant-numeric:tabular-nums; font-weight:500; }
+.eyebrow { font-family:var(--font-display); font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); }
+button,input,select,textarea { font:inherit; color:inherit; }
+:where(a,button,input,select,textarea,[tabindex]):focus-visible { outline:2px solid var(--accent); outline-offset:2px; border-radius:6px; }
+
+/* shell */
+.app { min-height:100%; display:flex; flex-direction:column; }
+.topbar { position:sticky; top:0; z-index:30; background:color-mix(in srgb,var(--paper) 88%,transparent); -webkit-backdrop-filter:saturate(180%) blur(12px); backdrop-filter:saturate(180%) blur(12px); border-bottom:1px solid var(--line); }
+.topbar-inner { display:flex; align-items:center; gap:12px; padding:10px 16px; max-width:1120px; margin:0 auto; width:100%; }
+.brand { display:flex; align-items:center; gap:10px; min-width:0; }
+.brand-mark { width:32px; height:32px; flex:none; border-radius:9px; background:var(--accent); color:var(--accent-ink); display:grid; place-items:center; font-family:var(--font-display); font-weight:700; font-size:15px; box-shadow:var(--shadow); }
+.brand-name { font-family:var(--font-display); font-weight:700; font-size:16px; letter-spacing:-.015em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.brand-sub { display:block; font-size:11px; color:var(--ink-3); letter-spacing:.02em; line-height:1.2; }
+.sync-dot { margin-left:auto; display:inline-flex; align-items:center; gap:6px; font-size:11px; color:var(--ink-3); white-space:nowrap; }
+.sync-dot::before { content:""; width:7px; height:7px; border-radius:50%; background:var(--ink-3); }
+.sync-dot[data-state="ok"]::before { background:var(--pos); }
+.sync-dot[data-state="pendente"]::before { background:var(--gold); }
+.sync-dot[data-state="offline"]::before { background:var(--neg); }
+
+main { flex:1; width:100%; max-width:1120px; margin:0 auto; padding:16px 16px 28px; }
+
+.tabbar { position:sticky; bottom:0; z-index:30; background:color-mix(in srgb,var(--surface) 92%,transparent); -webkit-backdrop-filter:saturate(180%) blur(12px); backdrop-filter:saturate(180%) blur(12px); border-top:1px solid var(--line); padding-bottom:env(safe-area-inset-bottom,0px); }
+.tabbar-inner { display:grid; grid-template-columns:repeat(6,1fr); max-width:620px; margin:0 auto; }
+.tab { appearance:none; background:none; border:0; padding:8px 2px 10px; display:flex; flex-direction:column; align-items:center; gap:3px; color:var(--ink-3); cursor:pointer; font-size:10px; font-family:var(--font-display); font-weight:600; letter-spacing:.01em; min-width:0; }
+.tab span { white-space:nowrap; }
+.tab svg { width:21px; height:21px; stroke-width:1.7; }
+.tab[aria-current="page"] { color:var(--accent); }
+.tab:active { transform:scale(.96); }
+
+/* cards e seções */
+.stack { display:flex; flex-direction:column; gap:16px; }
+.card { background:var(--surface); border:1px solid var(--line); border-radius:var(--r-md); box-shadow:var(--shadow); }
+.card-head { display:flex; align-items:baseline; justify-content:space-between; gap:12px; padding:14px 16px 0; }
+.card-head h2 { font-size:15px; }
+.card-body { padding:14px 16px 16px; }
+.section-title { display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin-bottom:10px; flex-wrap:wrap; }
+.section-title h2 { font-size:17px; }
+
+/* chips */
+.chips { display:flex; gap:8px; overflow-x:auto; scrollbar-width:none; padding-bottom:2px; margin-inline:-16px; padding-inline:16px; }
+.chips::-webkit-scrollbar { display:none; }
+.chip { appearance:none; flex:none; border:1px solid var(--line-2); background:var(--surface); color:var(--ink-2); border-radius:999px; padding:6px 13px; font-size:13px; font-weight:500; cursor:pointer; white-space:nowrap; transition:background .15s,color .15s,border-color .15s; }
+.chip[aria-pressed="true"] { background:var(--accent); border-color:var(--accent); color:var(--accent-ink); }
+
+/* stats */
+.stats { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+.stat { background:var(--surface); border:1px solid var(--line); border-radius:var(--r-md); padding:13px 14px; box-shadow:var(--shadow); display:flex; flex-direction:column; gap:2px; min-width:0; }
+.stat-label { font-size:11px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-3); }
+.stat-value { font-family:var(--font-mono); font-weight:500; font-size:21px; letter-spacing:-.02em; line-height:1.2; overflow-wrap:anywhere; }
+.stat-note { font-size:11.5px; color:var(--ink-3); }
+.stat.is-hero { grid-column:1 / -1; background:linear-gradient(135deg,var(--accent) 0%,var(--accent-2) 130%); border-color:transparent; color:var(--accent-ink); position:relative; overflow:hidden; }
+.stat.is-hero .stat-label, .stat.is-hero .stat-note { color:color-mix(in srgb,var(--accent-ink) 78%,transparent); }
+.stat.is-hero .stat-value { font-size:30px; }
+.stat-gold { color:var(--gold); }
+.stat-pos { color:var(--pos); }
+
+/* gráfico */
+.chart-wrap { overflow-x:auto; }
+.chart { display:block; width:100%; max-width:620px; height:auto; aspect-ratio:340/140; min-width:280px; }
+.chart .bar { fill:var(--accent); }
+.chart .bar-com { fill:var(--gold); }
+.chart .grid { stroke:var(--line); stroke-width:1; }
+.chart .lbl { fill:var(--ink-3); font-family:var(--font-mono); font-size:9px; }
+.legend { display:flex; gap:14px; font-size:11.5px; color:var(--ink-2); margin-top:8px; flex-wrap:wrap; }
+.legend span { display:inline-flex; align-items:center; gap:6px; }
+.legend i { width:9px; height:9px; border-radius:2px; display:inline-block; }
+
+/* formulários */
+.field { display:flex; flex-direction:column; gap:6px; }
+.field > label { font-size:12.5px; font-weight:600; color:var(--ink-2); letter-spacing:.01em; }
+.field-hint { font-size:11.5px; color:var(--ink-3); }
+.input, .select { width:100%; appearance:none; background:var(--surface); border:1px solid var(--line-2); border-radius:var(--r-sm); padding:11px 12px; font-size:16px; color:var(--ink); transition:border-color .15s,box-shadow .15s; }
+.input:focus, .select:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
+.select { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%237B8F88' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; background-size:11px; padding-right:34px; }
+.input-big { font-family:var(--font-mono); font-size:30px; font-weight:500; text-align:center; letter-spacing:-.02em; padding:14px 12px; }
+.input-money { font-family:var(--font-mono); }
+.row { display:flex; gap:10px; }
+.row > * { flex:1; min-width:0; }
+.grid-2 { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.check { flex-direction:row; align-items:center; gap:10px; }
+
+/* botões */
+.btn { appearance:none; border:1px solid transparent; border-radius:var(--r-sm); padding:12px 16px; font-family:var(--font-display); font-weight:600; font-size:14.5px; letter-spacing:.01em; cursor:pointer; background:var(--surface-3); color:var(--ink); display:inline-flex; align-items:center; justify-content:center; gap:8px; transition:filter .15s,transform .08s; }
+.btn:active { transform:translateY(1px); }
+.btn-primary { background:var(--accent); color:var(--accent-ink); box-shadow:var(--shadow); }
+.btn-primary:hover { filter:brightness(1.06); }
+.btn-ghost { background:transparent; border-color:var(--line-2); color:var(--ink-2); }
+.btn-danger { background:transparent; border-color:color-mix(in srgb,var(--neg) 40%,transparent); color:var(--neg); }
+.btn-block { width:100%; }
+.btn-sm { padding:7px 11px; font-size:13px; border-radius:7px; }
+.btn:disabled { opacity:.45; cursor:not-allowed; }
+
+/* prévia do lançamento */
+.ticket { background:var(--gold-soft); border:1px solid var(--gold-line); border-radius:var(--r-md); overflow:hidden; margin:0; }
+.ticket-row { display:flex; align-items:baseline; justify-content:space-between; gap:12px; padding:9px 14px; font-size:13.5px; }
+.ticket-row + .ticket-row { border-top:1px dashed var(--gold-line); }
+.ticket-row dt { color:var(--ink-2); margin:0; }
+.ticket-row dd { margin:0; font-family:var(--font-mono); font-variant-numeric:tabular-nums; }
+.ticket-row.is-total { background:color-mix(in srgb,var(--gold) 12%,transparent); }
+.ticket-row.is-total dt { font-weight:700; color:var(--ink); font-family:var(--font-display); }
+.ticket-row.is-total dd { font-size:17px; font-weight:500; }
+.tier-badge { display:inline-block; font-size:10.5px; font-family:var(--font-display); font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:var(--gold); border:1px solid var(--gold-line); background:var(--surface); border-radius:999px; padding:2px 8px; margin-left:6px; }
+
+/* listas */
+.day-group + .day-group { margin-top:14px; }
+.day-head { display:flex; align-items:baseline; justify-content:space-between; gap:10px; padding:0 4px 6px; }
+.day-date { font-family:var(--font-display); font-weight:700; font-size:13px; }
+.day-total { font-family:var(--font-mono); font-size:12px; color:var(--ink-3); }
+.entries { display:flex; flex-direction:column; background:var(--surface); border:1px solid var(--line); border-radius:var(--r-md); overflow:hidden; box-shadow:var(--shadow); }
+.entry { appearance:none; background:none; border:0; width:100%; text-align:left; display:grid; grid-template-columns:1fr auto; gap:2px 12px; padding:11px 14px; cursor:pointer; align-items:center; }
+.entry + .entry { border-top:1px solid var(--line); }
+.entry:hover { background:var(--surface-2); }
+.entry-name { font-weight:600; font-size:14.5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.entry-meta { font-size:11.5px; color:var(--ink-3); grid-column:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.entry-value { font-family:var(--font-mono); font-variant-numeric:tabular-nums; font-size:15px; grid-row:1 / span 2; grid-column:2; text-align:right; }
+.entry-value small { display:block; font-size:11px; color:var(--ink-3); font-family:var(--font-body); }
+.seller-row { display:flex; align-items:center; gap:10px; padding:11px 14px; background:var(--surface); }
+.seller-row + .seller-row { border-top:1px solid var(--line); }
+.seller-name { flex:1; font-weight:600; font-size:14.5px; }
+.badge-off { font-size:11px; color:var(--ink-3); border:1px solid var(--line-2); border-radius:999px; padding:1px 8px; }
+
+/* tabela */
+.table-wrap { overflow-x:auto; border:1px solid var(--line); border-radius:var(--r-md); background:var(--surface); box-shadow:var(--shadow); }
+table { border-collapse:collapse; width:100%; min-width:460px; }
+th, td { padding:10px 12px; text-align:right; font-size:13.5px; white-space:nowrap; }
+th:first-child, td:first-child { text-align:left; }
+thead th { font-family:var(--font-display); font-size:10.5px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-3); border-bottom:1px solid var(--line); background:var(--surface); }
+tbody tr + tr td { border-top:1px solid var(--line); }
+tfoot td { border-top:2px solid var(--line-2); font-weight:700; background:var(--surface-2); }
+
+/* vazio */
+.empty { text-align:center; padding:30px 20px; color:var(--ink-3); background:var(--surface); border:1px dashed var(--line-2); border-radius:var(--r-md); }
+.empty strong { display:block; color:var(--ink-2); font-family:var(--font-display); font-size:15px; margin-bottom:4px; }
+
+/* modal */
+.scrim { position:fixed; inset:0; z-index:60; background:rgba(8,20,16,.5); display:flex; align-items:flex-end; justify-content:center; animation:fade .18s ease; }
+@keyframes fade { from { opacity:0 } }
+@keyframes rise { from { transform:translateY(14px); opacity:.4 } }
+.sheet { background:var(--surface); width:100%; max-width:480px; border-radius:var(--r-lg) var(--r-lg) 0 0; box-shadow:var(--shadow-lift); max-height:88vh; overflow-y:auto; padding:18px 16px calc(18px + env(safe-area-inset-bottom,0px)); animation:rise .2s ease; }
+.sheet h2 { font-size:17px; margin-bottom:4px; }
+.sheet-sub { font-size:13px; color:var(--ink-3); margin-bottom:14px; }
+.sheet-actions { display:flex; gap:10px; margin-top:18px; }
+.sheet-actions .btn { flex:1; }
+
+/* aviso */
+.toast { position:fixed; left:50%; bottom:calc(84px + env(safe-area-inset-bottom,0px)); transform:translateX(-50%); z-index:80; background:var(--ink); color:var(--paper); padding:10px 16px; border-radius:999px; font-size:13.5px; font-weight:500; box-shadow:var(--shadow-lift); animation:rise .2s ease; max-width:calc(100% - 32px); text-align:center; }
+.toast[data-kind="erro"] { background:var(--neg); color:#fff; }
+.muted { color:var(--ink-3); font-size:12.5px; }
+.divider { height:1px; background:var(--line); border:0; margin:4px 0; }
+.inline-actions { display:flex; gap:8px; flex-wrap:wrap; }
+.two-col { display:grid; grid-template-columns:1fr; gap:16px; align-items:start; }
+
+@media (min-width:760px) {
+  main { padding-block:24px 32px; }
+  .stats { grid-template-columns:repeat(4,minmax(0,1fr)); }
+  .stat.is-hero { grid-column:span 2; }
+  .stat-value { font-size:23px; }
+  .two-col { grid-template-columns:1.15fr .85fr; }
+  .scrim { align-items:center; padding:24px; }
+  .sheet { border-radius:var(--r-lg); padding-bottom:18px; }
+}
+@media (min-width:960px) {
+  .app { flex-direction:row; }
+  .topbar { position:fixed; inset:0 auto 0 0; width:232px; border-right:1px solid var(--line); border-bottom:0; background:var(--surface); -webkit-backdrop-filter:none; backdrop-filter:none; }
+  .topbar-inner { flex-direction:column; align-items:stretch; gap:14px; padding:20px 16px; }
+  .sync-dot { margin-left:0; }
+  .tabbar { position:fixed; top:130px; left:0; bottom:0; width:232px; background:var(--surface); border-top:0; -webkit-backdrop-filter:none; backdrop-filter:none; z-index:31; }
+  .tabbar-inner { grid-template-columns:1fr; gap:2px; padding:0 12px; max-width:none; }
+  .tab { flex-direction:row; justify-content:flex-start; gap:11px; padding:10px 12px; border-radius:var(--r-sm); font-size:14px; }
+  .tab[aria-current="page"] { background:var(--accent-soft); }
+  main { margin-left:232px; padding:28px 28px 40px; max-width:1000px; }
+  .toast { left:calc(232px + (100% - 232px) / 2); bottom:28px; }
+}
+@media (prefers-reduced-motion: reduce) { * { animation-duration:.001ms !important; transition-duration:.001ms !important; } }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<div class="toast" id="aviso" role="status" hidden></div>
+<script type="module">
+/* Bilhete Premiado · controle de vendas (versão Firebase)
+   Login por e-mail e senha (contas criadas no console do Firebase).
+   Os dados ficam no Firestore, acessíveis só pelos usuários autorizados. */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+/* COLE AQUI o objeto firebaseConfig do seu projeto (Configurações do projeto > Seus apps). */
+const FIREBASE_CONFIG = {
+  apiKey: "COLE_AQUI",
+  authDomain: "COLE_AQUI",
+  projectId: "COLE_AQUI",
+  storageBucket: "COLE_AQUI",
+  messagingSenderId: "COLE_AQUI",
+  appId: "COLE_AQUI"
+};
+
+const app = initializeApp(FIREBASE_CONFIG);
+const auth = getAuth(app);
+const db = initializeFirestore(app, {
+  localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() })
+});
+const REF_DADOS = doc(db, "dados", "controle");
+
+(function () {
+  'use strict';
+
+  var CIDADES = [
+    { id: 'itinga', nome: 'Itinga' },
+    { id: 'bom-jesus', nome: 'Bom Jesus das Selvas' },
+    { id: 'acailandia', nome: 'Açailândia (MA)' }
+  ];
+
+  var PARAMS_PADRAO = { empresa: 'Bilhete Premiado', valorBilhete: 2.5, comissaoBaixa: 1, comissaoAlta: 1.2, limite: 50 };
+  var CHAVE_CACHE = 'bilhete-controle/cache-v2';
+  var CHAVE_SENHA = 'bilhete-controle/senha';
+
+  var brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+  var brlCurto = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+  var inteiro = new Intl.NumberFormat('pt-BR');
+
+  /* ---------- utilidades ---------- */
+  function moeda(n) { return brl.format(Number(n) || 0); }
+  function numero(n) { return inteiro.format(Number(n) || 0); }
+  function r2(n) { return Math.round((Number(n) || 0) * 100) / 100; }
+  function novoId() { return Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8); }
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function p2(n) { return String(n).padStart(2, '0'); }
+  function iso(d) { return d.getFullYear() + '-' + p2(d.getMonth() + 1) + '-' + p2(d.getDate()); }
+  function hoje() { return iso(new Date()); }
+  function paraData(s) { var p = String(s || '').split('-'); return new Date(Number(p[0]), Number(p[1]) - 1, Number(p[2])); }
+  function dataCurta(s) { var p = String(s || '').split('-'); return p[2] + '/' + p[1]; }
+  function dataLonga(s) {
+    var d = paraData(s);
+    var dias = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];
+    return dias[d.getDay()] + ', ' + p2(d.getDate()) + '/' + p2(d.getMonth() + 1) + '/' + d.getFullYear();
+  }
+  function somaDias(s, n) { var d = paraData(s); d.setDate(d.getDate() + n); return iso(d); }
+  function cidadeNome(id) { var c = CIDADES.filter(function (x) { return x.id === id; })[0]; return c ? c.nome : 'Sem cidade'; }
+  function ordenarDesc(a, b) {
+    if (a.data === b.data) return String(b.id).localeCompare(String(a.id));
+    return a.data < b.data ? 1 : -1;
+  }
+
+  /* ---------- regra de negócio (mesma da planilha) ---------- */
+  function comissaoUnitaria(bilhetes, p) {
+    return Number(bilhetes) >= Number(p.limite) ? Number(p.comissaoAlta) : Number(p.comissaoBaixa);
+  }
+  function calcular(l) {
+    var bilhetes = Number(l.bilhetes) || 0;
+    var comissao = r2(bilhetes * (Number(l.comissaoUnit) || 0));
+    var faturamento = r2(bilhetes * (Number(l.valorBilhete) || 0));
+    return { bilhetes: bilhetes, comissao: comissao, faturamento: faturamento, lucro: r2(faturamento - comissao) };
+  }
+  function totalizar(lista) {
+    return lista.reduce(function (acc, l) {
+      var c = calcular(l);
+      acc.bilhetes += c.bilhetes;
+      acc.comissao = r2(acc.comissao + c.comissao);
+      acc.faturamento = r2(acc.faturamento + c.faturamento);
+      acc.lucro = r2(acc.lucro + c.lucro);
+      return acc;
+    }, { bilhetes: 0, comissao: 0, faturamento: 0, lucro: 0 });
+  }
+
+  /* ---------- estado ---------- */
+  var estado = {
+    params: Object.assign({}, PARAMS_PADRAO),
+    vendedores: [],
+    lancamentos: [],
+    premios: [],
+    aba: 'resumo',
+    cidade: 'todas',
+    periodo: 'mes',
+    de: '',
+    ate: '',
+    filtroVendedor: '',
+    status: 'carregando',   /* carregando | sincronizado | salvando | pendente | offline | senha */
+    pendente: false,
+    senha: lerSenha(),
+    modal: null
+  };
+
+  var rascunho = { cidadeId: '', data: '', vendedorId: '', bilhetes: '', obs: '' };
+
+  function lerSenha() { try { return localStorage.getItem(CHAVE_SENHA) || ''; } catch (e) { return ''; } }
+  function gravarSenha(s) { try { localStorage.setItem(CHAVE_SENHA, s); } catch (e) {} }
+  function apagarSenha() { try { localStorage.removeItem(CHAVE_SENHA); } catch (e) {} }
+
+  function documento() {
+    return { versao: 2, params: estado.params, vendedores: estado.vendedores, lancamentos: estado.lancamentos, premios: estado.premios };
+  }
+
+  function aplicarDocumento(d) {
+    d = d || {};
+    estado.params = Object.assign({}, PARAMS_PADRAO, d.params || {});
+    estado.vendedores = (Array.isArray(d.vendedores) ? d.vendedores : []).map(function (v) {
+      return { id: v.id || novoId(), nome: v.nome || 'Sem nome', cidadeId: v.cidadeId || '', ativo: v.ativo !== false, criadoEm: v.criadoEm || hoje() };
+    });
+    estado.lancamentos = (Array.isArray(d.lancamentos) ? d.lancamentos : []).map(function (l) {
+      return {
+        id: l.id || novoId(), data: l.data || hoje(), cidadeId: l.cidadeId || '', vendedorId: l.vendedorId || '',
+        vendedorNome: l.vendedorNome || '', bilhetes: Number(l.bilhetes) || 0,
+        valorBilhete: Number(l.valorBilhete) || estado.params.valorBilhete,
+        comissaoUnit: Number(l.comissaoUnit) || 0, obs: l.obs || '', criadoEm: l.criadoEm || ''
+      };
+    });
+    estado.premios = (Array.isArray(d.premios) ? d.premios : []).map(function (p) {
+      return {
+        id: p.id || novoId(), data: p.data || hoje(), cidadeId: p.cidadeId || '',
+        tipo: p.tipo === 'aproximacao' ? 'aproximacao' : 'premio',
+        numero: String(p.numero || ''), ganhador: p.ganhador || '', valor: Number(p.valor) || 0,
+        obs: p.obs || '', criadoEm: p.criadoEm || ''
+      };
+    });
+  }
+
+  /* ---------- cópia local (aparelho) ---------- */
+  var Cache = {
+    ler: function () { try { var c = localStorage.getItem(CHAVE_CACHE); return c ? JSON.parse(c) : null; } catch (e) { return null; } },
+    gravar: function () { try { localStorage.setItem(CHAVE_CACHE, JSON.stringify(documento())); } catch (e) {} }
+  };
+
+  /* ---------- servidor ---------- */
+  function api(metodo, corpo) {
+    if (!auth.currentUser) { var semLogin = new Error('senha'); semLogin.code = 'senha'; return Promise.reject(semLogin); }
+    if (metodo === 'GET') {
+      return getDoc(REF_DADOS).then(function (snap) { return snap.exists() ? snap.data() : {}; });
+    }
+    /* O Firestore guarda a alteração no aparelho e envia quando houver internet.
+       Por isso não esperamos a confirmação do servidor aqui; só avisamos se for recusada. */
+    setDoc(REF_DADOS, corpo).catch(function (e) {
+      aviso(e && e.code === 'permission-denied' ? 'Sua conta não tem permissão para salvar.' : 'Não foi possível salvar. Tente de novo.', 'erro');
+    });
+    return Promise.resolve({ ok: true });
+  }
+
+  var versaoLocal = 0;
+  var enviando = false;
+  var timerEnvio = null;
+
+  function atualizarStatus() {
+    var el = document.querySelector('.sync-dot');
+    if (!el) return;
+    var s = estado.status;
+    el.setAttribute('data-state', s === 'sincronizado' ? 'ok' : (s === 'salvando' || s === 'pendente') ? 'pendente' : s === 'offline' ? 'offline' : 'carregando');
+    el.textContent = s === 'sincronizado' ? 'Sincronizado'
+      : s === 'salvando' || s === 'pendente' ? 'Salvando…'
+      : s === 'offline' ? 'Sem conexão · salvo neste aparelho'
+      : s === 'senha' ? 'Aguardando senha' : 'Carregando…';
+  }
+
+  /* Marca uma alteração e agenda o envio ao servidor. */
+  function salvar() {
+    Cache.gravar();
+    versaoLocal++;
+    estado.pendente = true;
+    estado.status = 'salvando';
+    atualizarStatus();
+    clearTimeout(timerEnvio);
+    timerEnvio = setTimeout(enviar, 350);
+  }
+
+  function enviar() {
+    if (!estado.pendente || enviando) return;
+    enviando = true;
+    var v = versaoLocal;
+    estado.status = 'salvando';
+    atualizarStatus();
+    api('PUT', documento()).then(function () {
+      enviando = false;
+      if (v === versaoLocal) {
+        estado.pendente = false;
+        estado.status = 'sincronizado';
+      } else {
+        setTimeout(enviar, 300);
+      }
+      atualizarStatus();
+    }, function (e) {
+      enviando = false;
+      if (e.code === 'senha') { pedirSenha(); return; }
+      estado.status = 'offline';
+      atualizarStatus();
+    });
+  }
+
+  function carregarDoServidor() {
+    if (estado.pendente) return Promise.resolve();
+    return api('GET').then(function (d) {
+      if (!d || !d.versao) {
+        /* servidor vazio: se este aparelho tem dados, envia-os para lá */
+        var c = Cache.ler();
+        if (c && ((c.lancamentos || []).length || (c.vendedores || []).length || (c.premios || []).length)) {
+          aplicarDocumento(c);
+          estado.pendente = true;
+          render();
+          enviar();
+          return;
+        }
+      }
+      aplicarDocumento(d);
+      Cache.gravar();
+      estado.status = 'sincronizado';
+      render();
+    }).catch(function (e) {
+      if (e.code === 'senha') { estado.status = 'senha'; pedirSenha(); return; }
+      var c = Cache.ler();
+      if (c) aplicarDocumento(c);
+      estado.status = 'offline';
+      render();
+    });
+  }
+
+  /* ---------- período e filtros ---------- */
+  var PERIODOS = [
+    { id: 'hoje', rotulo: 'Hoje' },
+    { id: '7d', rotulo: '7 dias' },
+    { id: 'mes', rotulo: 'Este mês' },
+    { id: 'mesPassado', rotulo: 'Mês passado' },
+    { id: 'tudo', rotulo: 'Tudo' },
+    { id: 'custom', rotulo: 'Escolher datas' }
+  ];
+
+  function intervalo() {
+    var agora = new Date(), ano = agora.getFullYear(), mes = agora.getMonth();
+    switch (estado.periodo) {
+      case 'hoje': return { de: hoje(), ate: hoje() };
+      case '7d': return { de: somaDias(hoje(), -6), ate: hoje() };
+      case 'mes': return { de: iso(new Date(ano, mes, 1)), ate: iso(new Date(ano, mes + 1, 0)) };
+      case 'mesPassado': return { de: iso(new Date(ano, mes - 1, 1)), ate: iso(new Date(ano, mes, 0)) };
+      case 'custom': return { de: estado.de || hoje(), ate: estado.ate || hoje() };
+      default: return { de: '', ate: '' };
+    }
+  }
+
+  function rotuloPeriodo() {
+    var r = intervalo();
+    if (!r.de) return 'Todo o período';
+    if (r.de === r.ate) return dataLonga(r.de);
+    return dataCurta(r.de) + ' a ' + dataCurta(r.ate) + '/' + paraData(r.ate).getFullYear();
+  }
+
+  function filtrarPeriodo(lista) {
+    var r = intervalo();
+    return lista.filter(function (x) { return !(r.de && (x.data < r.de || x.data > r.ate)); });
+  }
+
+  function lancamentosDoPeriodo(comFiltroVendedor) {
+    return filtrarPeriodo(estado.lancamentos.filter(function (l) {
+      if (estado.cidade !== 'todas' && l.cidadeId !== estado.cidade) return false;
+      if (comFiltroVendedor && estado.filtroVendedor && l.vendedorId !== estado.filtroVendedor) return false;
+      return true;
+    })).sort(ordenarDesc);
+  }
+
+  function premiosFiltrados() {
+    return estado.premios.filter(function (p) {
+      return estado.cidade === 'todas' || p.cidadeId === estado.cidade;
+    }).sort(function (a, b) {
+      if (a.data === b.data) return String(b.numero).localeCompare(String(a.numero));
+      return a.data < b.data ? 1 : -1;
+    });
+  }
+
+  function nomeVendedor(l) {
+    var v = estado.vendedores.filter(function (x) { return x.id === l.vendedorId; })[0];
+    return v ? v.nome : (l.vendedorNome || 'Sem vendedor');
+  }
+
+  function vendedoresDaCidade(cid) {
+    return estado.vendedores.filter(function (v) { return v.cidadeId === cid && v.ativo !== false; });
+  }
+
+  function resumoPorVendedor(lista) {
+    var mapa = {};
+    lista.forEach(function (l) {
+      var chave = l.vendedorId || ('nome:' + (l.vendedorNome || '—'));
+      if (!mapa[chave]) mapa[chave] = { id: l.vendedorId, nome: nomeVendedor(l), cidadeId: l.cidadeId, bilhetes: 0, comissao: 0, faturamento: 0, lucro: 0, dias: {} };
+      var c = calcular(l), m = mapa[chave];
+      m.bilhetes += c.bilhetes;
+      m.comissao = r2(m.comissao + c.comissao);
+      m.faturamento = r2(m.faturamento + c.faturamento);
+      m.lucro = r2(m.lucro + c.lucro);
+      m.dias[l.data] = true;
+    });
+    return Object.keys(mapa).map(function (k) {
+      mapa[k].diasTrabalhados = Object.keys(mapa[k].dias).length;
+      return mapa[k];
+    }).sort(function (a, b) { return b.bilhetes - a.bilhetes; });
+  }
+
+  /* ---------- ícones e abas ---------- */
+  var ICONES = {
+    resumo: '<path d="M3 13h4v7H3zM10 4h4v16h-4zM17 9h4v11h-4z"/>',
+    lancar: '<path d="M12 5v14M5 12h14" stroke-linecap="round"/>',
+    vendas: '<path d="M4 6h16M4 12h16M4 18h10" stroke-linecap="round"/>',
+    vendedores: '<path d="M16 19v-1a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v1"/><circle cx="9.5" cy="7" r="3.2"/><path d="M17 11.5a3 3 0 1 0-1.6-5.5"/><path d="M21 19v-1a3.6 3.6 0 0 0-2.6-3.4"/>',
+    premios: '<path d="M8 4h8v5a4 4 0 0 1-8 0V4z"/><path d="M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8 20h8"/>',
+    ajustes: '<circle cx="12" cy="12" r="3"/><path d="M19.4 14a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1V20a2 2 0 1 1-4 0v-.1A1.6 1.6 0 0 0 7.5 18l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.6 1.6 0 0 0 4 12.5H4a2 2 0 1 1 0-4h.1A1.6 1.6 0 0 0 5.6 6l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 2.7-1.1V2a2 2 0 1 1 4 0v.1A1.6 1.6 0 0 0 17.8 3.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8v.1a1.6 1.6 0 0 0 1.5 1h.2a2 2 0 1 1 0 4H22a1.6 1.6 0 0 0-1.5 1z"/>'
+  };
+  function icone(nome) {
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linejoin="round" aria-hidden="true">' + ICONES[nome] + '</svg>';
+  }
+  var ABAS = [
+    { id: 'resumo', rotulo: 'Resumo' },
+    { id: 'lancar', rotulo: 'Lançar' },
+    { id: 'vendas', rotulo: 'Vendas' },
+    { id: 'vendedores', rotulo: 'Vendedores' },
+    { id: 'premios', rotulo: 'Prêmios' },
+    { id: 'ajustes', rotulo: 'Ajustes' }
+  ];
+
+  /* ---------- blocos reutilizáveis ---------- */
+  function chipsCidade() {
+    var opcoes = [{ id: 'todas', nome: 'Todas' }].concat(CIDADES);
+    return '<div class="chips" role="group" aria-label="Cidade">' + opcoes.map(function (c) {
+      return '<button class="chip" type="button" data-acao="cidade" data-valor="' + c.id + '" aria-pressed="' + (estado.cidade === c.id) + '">' + esc(c.nome) + '</button>';
+    }).join('') + '</div>';
+  }
+
+  function chipsPeriodo() {
+    var html = '<div class="chips" role="group" aria-label="Período">';
+    PERIODOS.forEach(function (p) {
+      html += '<button class="chip" type="button" data-acao="periodo" data-valor="' + p.id + '" aria-pressed="' + (estado.periodo === p.id) + '">' + esc(p.rotulo) + '</button>';
+    });
+    html += '</div>';
+    if (estado.periodo === 'custom') {
+      var r = intervalo();
+      html += '<div class="row" style="margin-top:10px">' +
+        '<div class="field"><label for="f-de">De</label><input class="input" type="date" id="f-de" data-acao="data-de" value="' + esc(r.de) + '"></div>' +
+        '<div class="field"><label for="f-ate">Até</label><input class="input" type="date" id="f-ate" data-acao="data-ate" value="' + esc(r.ate) + '"></div>' +
+        '</div>';
+    }
+    return html;
+  }
+
+  function stat(rotulo, valor, classe, nota) {
+    return '<div class="stat"><span class="stat-label">' + esc(rotulo) + '</span>' +
+      '<span class="stat-value ' + (classe || '') + '">' + esc(valor) + '</span>' +
+      (nota ? '<span class="stat-note">' + esc(nota) + '</span>' : '') + '</div>';
+  }
+
+  function itemLancamento(l) {
+    var c = calcular(l);
+    return '<button class="entry" type="button" data-acao="editar-lancamento" data-id="' + esc(l.id) + '">' +
+      '<span class="entry-name">' + esc(nomeVendedor(l)) + '</span>' +
+      '<span class="entry-meta">' + dataCurta(l.data) + ' · ' + esc(cidadeNome(l.cidadeId)) + ' · ' + numero(c.bilhetes) + ' bilhetes · comissão ' + esc(moeda(c.comissao)) + '</span>' +
+      '<span class="entry-value">' + esc(moeda(c.faturamento)) + '<small>lucro ' + esc(moeda(c.lucro)) + '</small></span>' +
+      '</button>';
+  }
+
+  function itemPremio(p) {
+    var tipo = p.tipo === 'aproximacao' ? 'Aproximação' : 'Prêmio';
+    return '<button class="entry" type="button" data-acao="editar-premio" data-id="' + esc(p.id) + '">' +
+      '<span class="entry-name">Nº ' + esc(p.numero) + '<span class="tier-badge">' + tipo + '</span></span>' +
+      '<span class="entry-meta">' + dataCurta(p.data) + ' · ' + esc(p.ganhador || 'ganhador não informado') + '</span>' +
+      '<span class="entry-value">' + (p.valor > 0 ? esc(moeda(p.valor)) : '—') + '</span>' +
+      '</button>';
+  }
+
+  function bannerNaoSalvo() {
+    return '';
+  }
+
+  /* ---------- gráfico ---------- */
+  function grafico(lista) {
+    if (!lista.length) return '<p class="muted" style="margin:0">Sem dados para o gráfico.</p>';
+    var porDia = {};
+    lista.forEach(function (l) {
+      var c = calcular(l);
+      if (!porDia[l.data]) porDia[l.data] = { lucro: 0, comissao: 0 };
+      porDia[l.data].lucro = r2(porDia[l.data].lucro + c.lucro);
+      porDia[l.data].comissao = r2(porDia[l.data].comissao + c.comissao);
+    });
+    var dias = Object.keys(porDia).sort();
+    var agruparPorMes = dias.length > 31;
+    if (agruparPorMes) {
+      var porMes = {};
+      dias.forEach(function (d) {
+        var m = d.slice(0, 7);
+        if (!porMes[m]) porMes[m] = { lucro: 0, comissao: 0 };
+        porMes[m].lucro = r2(porMes[m].lucro + porDia[d].lucro);
+        porMes[m].comissao = r2(porMes[m].comissao + porDia[d].comissao);
+      });
+      porDia = porMes;
+      dias = Object.keys(porMes).sort().slice(-24);
+    }
+    var L = 46, R = 8, T = 10, B = 20, W = 340, H = 140;
+    var areaW = W - L - R, areaH = H - T - B;
+    var teto = Math.max.apply(null, dias.map(function (d) { return porDia[d].lucro + porDia[d].comissao; }));
+    if (!teto || teto <= 0) teto = 1;
+    var escala = Math.pow(10, Math.floor(Math.log10(teto)));
+    var topo = Math.ceil(teto / escala) * escala;
+    var passo = areaW / dias.length;
+    var largura = Math.max(3, Math.min(26, passo * 0.62));
+
+    var svg = '<div class="chart-wrap"><svg class="chart" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Lucro e comissões por dia">';
+    [0, 0.5, 1].forEach(function (f) {
+      var y = T + areaH - areaH * f;
+      svg += '<line class="grid" x1="' + L + '" y1="' + y.toFixed(1) + '" x2="' + (W - R) + '" y2="' + y.toFixed(1) + '"/>';
+      svg += '<text class="lbl" x="' + (L - 5) + '" y="' + (y + 3).toFixed(1) + '" text-anchor="end">' + esc(brlCurto.format(topo * f)) + '</text>';
+    });
+    dias.forEach(function (d, i) {
+      var v = porDia[d];
+      var x = L + passo * i + (passo - largura) / 2;
+      var hLucro = areaH * (v.lucro / topo), hCom = areaH * (v.comissao / topo);
+      var yCom = T + areaH - hCom, yLucro = yCom - hLucro;
+      svg += '<rect class="bar-com" x="' + x.toFixed(1) + '" y="' + yCom.toFixed(1) + '" width="' + largura.toFixed(1) + '" height="' + Math.max(0, hCom).toFixed(1) + '" rx="1"/>';
+      svg += '<rect class="bar" x="' + x.toFixed(1) + '" y="' + yLucro.toFixed(1) + '" width="' + largura.toFixed(1) + '" height="' + Math.max(0, hLucro).toFixed(1) + '" rx="1"/>';
+    });
+    var passoRotulo = Math.ceil(dias.length / 7);
+    dias.forEach(function (d, i) {
+      if (i % passoRotulo !== 0 && i !== dias.length - 1) return;
+      var x = L + passo * i + passo / 2;
+      var texto = agruparPorMes ? d.slice(5, 7) + '/' + d.slice(2, 4) : dataCurta(d);
+      svg += '<text class="lbl" x="' + x.toFixed(1) + '" y="' + (H - 5) + '" text-anchor="middle">' + esc(texto) + '</text>';
+    });
+    svg += '</svg></div>';
+    svg += '<div class="legend"><span><i style="background:var(--accent)"></i>Lucro da empresa</span>' +
+      '<span><i style="background:var(--gold)"></i>Comissões</span><span class="muted">Altura da barra = faturamento</span></div>';
+    return svg;
+  }
+
+  /* ---------- aba: Resumo ---------- */
+  function viewResumo() {
+    var lista = lancamentosDoPeriodo(false);
+    var t = totalizar(lista);
+    var ranking = resumoPorVendedor(lista).slice(0, 5);
+    var nomeCidade = estado.cidade === 'todas' ? 'todas as cidades' : cidadeNome(estado.cidade);
+
+    var html = '<div class="stack">';
+    html += '<div class="stack" style="gap:8px">' + chipsCidade() + chipsPeriodo() + '</div>';
+
+    html += '<div class="stats">' +
+      '<div class="stat is-hero"><span class="stat-label">Lucro da empresa</span>' +
+      '<span class="stat-value">' + esc(moeda(t.lucro)) + '</span>' +
+      '<span class="stat-note">' + esc(rotuloPeriodo() + ' · ' + nomeCidade) + '</span></div>' +
+      stat('Bilhetes', numero(t.bilhetes), '', lista.length + ' lançamento' + (lista.length === 1 ? '' : 's')) +
+      stat('Faturamento', moeda(t.faturamento), '', moeda(estado.params.valorBilhete) + ' por bilhete') +
+      stat('Comissões', moeda(t.comissao), 'stat-gold', t.faturamento > 0 ? Math.round(t.comissao / t.faturamento * 100) + '% do faturamento' : 'pagas aos vendedores') +
+      '</div>';
+
+    if (estado.cidade === 'todas') html += tabelaPorCidade();
+
+    html += '<div class="two-col">';
+    html += '<div class="card"><div class="card-head"><h2>Movimento do período</h2><span class="eyebrow">' + esc(rotuloPeriodo()) + '</span></div>' +
+      '<div class="card-body">' + grafico(lista) + '</div></div>';
+
+    html += '<div class="card"><div class="card-head"><h2>Vendedores</h2>' +
+      (ranking.length ? '<span class="eyebrow">Líder: ' + esc(ranking[0].nome.split(' ')[0]) + '</span>' : '') +
+      '</div><div class="card-body">';
+    if (!ranking.length) {
+      html += '<p class="muted" style="margin:0">Nenhuma venda lançada neste período.</p>';
+    } else {
+      html += '<div class="stack" style="gap:10px">';
+      var teto = Math.max.apply(null, ranking.map(function (v) { return v.bilhetes; }));
+      ranking.forEach(function (v) {
+        var pct = teto ? Math.round(v.bilhetes / teto * 100) : 0;
+        html += '<div><div style="display:flex;justify-content:space-between;gap:10px;font-size:13.5px">' +
+          '<span style="font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(v.nome) + '</span>' +
+          '<span class="num">' + numero(v.bilhetes) + ' bilh. · ' + esc(moeda(v.comissao)) + '</span></div>' +
+          '<div style="height:6px;border-radius:3px;background:var(--surface-3);margin-top:5px;overflow:hidden">' +
+          '<div style="height:100%;width:' + pct + '%;background:var(--accent);border-radius:3px"></div></div></div>';
+      });
+      html += '</div>';
+    }
+    html += '</div></div></div>';
+
+    html += '<div><div class="section-title"><h2>Últimos lançamentos</h2>' +
+      '<button class="btn btn-sm btn-ghost" type="button" data-acao="aba" data-valor="vendas">Ver todos</button></div>';
+    var ultimos = lista.slice(0, 5);
+    html += ultimos.length
+      ? '<div class="entries">' + ultimos.map(itemLancamento).join('') + '</div>'
+      : '<div class="empty"><strong>Nada lançado ainda</strong>Toque em “Lançar” para registrar a primeira venda.</div>';
+    html += '</div></div>';
+    return html;
+  }
+
+  function tabelaPorCidade() {
+    var base = filtrarPeriodo(estado.lancamentos);
+    var tot = { bilhetes: 0, comissao: 0, faturamento: 0, lucro: 0 };
+    var linhas = CIDADES.map(function (c) {
+      var t = totalizar(base.filter(function (l) { return l.cidadeId === c.id; }));
+      tot.bilhetes += t.bilhetes; tot.comissao = r2(tot.comissao + t.comissao);
+      tot.faturamento = r2(tot.faturamento + t.faturamento); tot.lucro = r2(tot.lucro + t.lucro);
+      return '<tr><td>' + esc(c.nome) + '</td><td class="num">' + numero(t.bilhetes) + '</td>' +
+        '<td class="num">' + esc(moeda(t.comissao)) + '</td><td class="num">' + esc(moeda(t.faturamento)) + '</td>' +
+        '<td class="num">' + esc(moeda(t.lucro)) + '</td></tr>';
+    }).join('');
+    return '<div><div class="section-title"><h2>Por cidade</h2><span class="eyebrow">' + esc(rotuloPeriodo()) + '</span></div>' +
+      '<div class="table-wrap"><table><thead><tr><th>Cidade</th><th>Bilhetes</th><th>Comissão</th><th>Faturamento</th><th>Lucro</th></tr></thead>' +
+      '<tbody>' + linhas + '</tbody>' +
+      '<tfoot><tr><td>Total</td><td class="num">' + numero(tot.bilhetes) + '</td><td class="num">' + esc(moeda(tot.comissao)) + '</td>' +
+      '<td class="num">' + esc(moeda(tot.faturamento)) + '</td><td class="num">' + esc(moeda(tot.lucro)) + '</td></tr></tfoot>' +
+      '</table></div></div>';
+  }
+
+  /* ---------- aba: Lançar ---------- */
+  function viewLancar() {
+    if (!rascunho.cidadeId) rascunho.cidadeId = estado.cidade !== 'todas' ? estado.cidade : CIDADES[0].id;
+    if (!rascunho.data) rascunho.data = hoje();
+    var ativos = vendedoresDaCidade(rascunho.cidadeId);
+    if (!ativos.some(function (v) { return v.id === rascunho.vendedorId; })) rascunho.vendedorId = ativos.length ? ativos[0].id : '';
+
+    var html = '<div class="stack">';
+    html += '<div class="section-title"><h2>Lançar venda</h2><span class="eyebrow">Novo bilhete vendido</span></div>';
+    html += '<div class="card"><div class="card-body"><div class="stack">';
+
+    html += '<div class="field"><label for="l-cidade">Cidade</label><select class="select" id="l-cidade" data-campo="cidadeId">' +
+      CIDADES.map(function (c) {
+        return '<option value="' + c.id + '"' + (c.id === rascunho.cidadeId ? ' selected' : '') + '>' + esc(c.nome) + '</option>';
+      }).join('') + '</select></div>';
+
+    html += '<div class="field"><label for="l-data">Data</label>' +
+      '<input class="input" type="date" id="l-data" data-campo="data" value="' + esc(rascunho.data) + '"></div>';
+
+    html += '<div class="field"><label for="l-vendedor">Vendedor</label>';
+    if (!ativos.length) {
+      html += '<p class="muted" style="margin:0 0 8px">Ainda não há vendedor cadastrado em ' + esc(cidadeNome(rascunho.cidadeId)) + '.</p>' +
+        '<button class="btn btn-ghost btn-block" type="button" data-acao="novo-vendedor">Cadastrar vendedor</button>';
+    } else {
+      html += '<select class="select" id="l-vendedor" data-campo="vendedorId">' +
+        ativos.map(function (v) {
+          return '<option value="' + esc(v.id) + '"' + (v.id === rascunho.vendedorId ? ' selected' : '') + '>' + esc(v.nome) + '</option>';
+        }).join('') + '</select>' +
+        '<button class="btn btn-sm btn-ghost" type="button" data-acao="novo-vendedor" style="align-self:flex-start;margin-top:2px">+ Novo vendedor</button>';
+    }
+    html += '</div>';
+
+    html += '<div class="field"><label for="l-bilhetes">Bilhetes vendidos</label>' +
+      '<input class="input input-big" type="number" inputmode="numeric" min="0" step="1" id="l-bilhetes" placeholder="0" data-campo="bilhetes" value="' + esc(rascunho.bilhetes) + '">' +
+      '<span class="field-hint">A partir de ' + numero(estado.params.limite) + ' bilhetes no dia, a comissão sobe para ' + esc(moeda(estado.params.comissaoAlta)) + ' por bilhete.</span></div>';
+
+    html += '<div class="field"><label for="l-obs">Observação (opcional)</label>' +
+      '<input class="input" type="text" id="l-obs" maxlength="120" placeholder="Ex.: feira do centro" data-campo="obs" value="' + esc(rascunho.obs) + '"></div>';
+
+    html += '<div id="previa">' + previaLancamento() + '</div>';
+    html += '<button class="btn btn-primary btn-block" type="button" data-acao="salvar-lancamento"' + (ativos.length ? '' : ' disabled') + '>Salvar lançamento</button>';
+    html += '</div></div></div></div>';
+    return html;
+  }
+
+  function previaLancamento() {
+    var bilhetes = Number(rascunho.bilhetes) || 0;
+    var p = estado.params;
+    var unit = comissaoUnitaria(bilhetes, p);
+    var c = calcular({ bilhetes: bilhetes, valorBilhete: p.valorBilhete, comissaoUnit: unit });
+    var faixaAlta = bilhetes >= Number(p.limite) && bilhetes > 0;
+    return '<dl class="ticket">' +
+      '<div class="ticket-row"><dt>Comissão por bilhete' + (faixaAlta ? '<span class="tier-badge">Faixa maior</span>' : '') + '</dt><dd>' + esc(moeda(unit)) + '</dd></div>' +
+      '<div class="ticket-row"><dt>Comissão do vendedor</dt><dd>' + esc(moeda(c.comissao)) + '</dd></div>' +
+      '<div class="ticket-row"><dt>Faturamento</dt><dd>' + esc(moeda(c.faturamento)) + '</dd></div>' +
+      '<div class="ticket-row is-total"><dt>Lucro da empresa</dt><dd>' + esc(moeda(c.lucro)) + '</dd></div>' +
+      '</dl>';
+  }
+
+  function atualizarPrevia() {
+    var alvo = document.getElementById('previa');
+    if (alvo) alvo.innerHTML = previaLancamento();
+  }
+
+  function salvarDoRascunho() {
+    var bilhetes = Math.floor(Number(rascunho.bilhetes));
+    if (!rascunho.cidadeId) return aviso('Escolha a cidade.', 'erro');
+    if (!rascunho.vendedorId) return aviso('Escolha um vendedor.', 'erro');
+    if (!(bilhetes > 0)) return aviso('Informe quantos bilhetes foram vendidos.', 'erro');
+    if (!rascunho.data) return aviso('Informe a data.', 'erro');
+
+    var existente = estado.lancamentos.filter(function (l) {
+      return l.data === rascunho.data && l.vendedorId === rascunho.vendedorId;
+    })[0];
+    if (existente) {
+      abrirModal({ tipo: 'duplicado', dados: { existente: existente, bilhetes: bilhetes } });
+      return;
+    }
+    gravarNovoLancamento(bilhetes);
+  }
+
+  function gravarNovoLancamento(bilhetes) {
+    var v = estado.vendedores.filter(function (x) { return x.id === rascunho.vendedorId; })[0];
+    var l = {
+      id: novoId(), data: rascunho.data, cidadeId: rascunho.cidadeId,
+      vendedorId: rascunho.vendedorId, vendedorNome: v ? v.nome : '',
+      bilhetes: bilhetes, valorBilhete: Number(estado.params.valorBilhete),
+      comissaoUnit: comissaoUnitaria(bilhetes, estado.params),
+      obs: rascunho.obs || '', criadoEm: new Date().toISOString()
+    };
+    estado.lancamentos.push(l);
+    salvar();
+    rascunho.bilhetes = '';
+    rascunho.obs = '';
+    aviso(numero(bilhetes) + ' bilhetes lançados em ' + cidadeNome(l.cidadeId) + ' · lucro ' + moeda(calcular(l).lucro));
+    render();
+  }
+
+  /* ---------- aba: Vendas ---------- */
+  function viewVendas() {
+    var lista = lancamentosDoPeriodo(true);
+    var t = totalizar(lista);
+    var vendedores = estado.cidade === 'todas' ? estado.vendedores : estado.vendedores.filter(function (v) { return v.cidadeId === estado.cidade; });
+
+    var html = '<div class="stack">';
+    html += '<div class="section-title"><h2>Vendas</h2><span class="eyebrow">' + lista.length + ' lançamento' + (lista.length === 1 ? '' : 's') + '</span></div>';
+    html += chipsCidade();
+    html += '<div>' + chipsPeriodo() + '</div>';
+
+    html += '<div class="field"><label for="f-vendedor">Vendedor</label>' +
+      '<select class="select" id="f-vendedor" data-acao="filtro-vendedor"><option value="">Todos os vendedores</option>' +
+      vendedores.map(function (v) {
+        return '<option value="' + esc(v.id) + '"' + (v.id === estado.filtroVendedor ? ' selected' : '') + '>' + esc(v.nome) + '</option>';
+      }).join('') + '</select></div>';
+
+    html += '<div class="stats">' +
+      stat('Bilhetes', numero(t.bilhetes)) + stat('Faturamento', moeda(t.faturamento)) +
+      stat('Comissões', moeda(t.comissao), 'stat-gold') + stat('Lucro', moeda(t.lucro), 'stat-pos') + '</div>';
+
+    if (!lista.length) {
+      html += '<div class="empty"><strong>Nenhum lançamento</strong>Ajuste o período, a cidade ou lance uma venda nova.</div>';
+    } else {
+      var grupos = {};
+      lista.forEach(function (l) { (grupos[l.data] = grupos[l.data] || []).push(l); });
+      Object.keys(grupos).sort().reverse().forEach(function (dia) {
+        var td = totalizar(grupos[dia]);
+        html += '<div class="day-group"><div class="day-head"><span class="day-date">' + esc(dataLonga(dia)) + '</span>' +
+          '<span class="day-total">' + numero(td.bilhetes) + ' bilhetes · ' + esc(moeda(td.faturamento)) + '</span></div>' +
+          '<div class="entries">' + grupos[dia].map(itemLancamento).join('') + '</div></div>';
+      });
+    }
+    html += '<button class="btn btn-ghost btn-block" type="button" data-acao="exportar-csv">Exportar este período (CSV para Excel)</button>';
+    html += '</div>';
+    return html;
+  }
+
+  /* ---------- aba: Vendedores ---------- */
+  function viewVendedores() {
+    var lista = lancamentosDoPeriodo(false);
+    var resumo = resumoPorVendedor(lista);
+    var t = totalizar(lista);
+
+    var html = '<div class="stack">';
+    html += '<div class="section-title"><h2>Vendedores</h2><span class="eyebrow">' + esc(rotuloPeriodo()) + '</span></div>';
+    html += chipsCidade();
+    html += '<div>' + chipsPeriodo() + '</div>';
+
+    if (!resumo.length) {
+      html += '<div class="empty"><strong>Sem vendas no período</strong>Os totais aparecem aqui assim que houver lançamentos.</div>';
+    } else {
+      html += '<div class="table-wrap"><table><thead><tr><th>Vendedor</th><th>Cidade</th><th>Bilhetes</th><th>Comissão</th><th>Faturamento</th><th>Lucro</th><th>Dias</th></tr></thead><tbody>';
+      resumo.forEach(function (v) {
+        html += '<tr><td>' + esc(v.nome) + '</td><td>' + esc(cidadeNome(v.cidadeId)) + '</td>' +
+          '<td class="num">' + numero(v.bilhetes) + '</td><td class="num">' + esc(moeda(v.comissao)) + '</td>' +
+          '<td class="num">' + esc(moeda(v.faturamento)) + '</td><td class="num">' + esc(moeda(v.lucro)) + '</td>' +
+          '<td class="num">' + v.diasTrabalhados + '</td></tr>';
+      });
+      html += '</tbody><tfoot><tr><td>Total</td><td></td><td class="num">' + numero(t.bilhetes) + '</td>' +
+        '<td class="num">' + esc(moeda(t.comissao)) + '</td><td class="num">' + esc(moeda(t.faturamento)) + '</td>' +
+        '<td class="num">' + esc(moeda(t.lucro)) + '</td><td></td></tr></tfoot></table></div>';
+    }
+
+    html += '<div class="section-title" style="margin-top:6px"><h2>Cadastro</h2>' +
+      '<button class="btn btn-sm btn-primary" type="button" data-acao="novo-vendedor">+ Vendedor</button></div>';
+
+    var cidadesAlvo = estado.cidade === 'todas' ? CIDADES : CIDADES.filter(function (c) { return c.id === estado.cidade; });
+    cidadesAlvo.forEach(function (c) {
+      var vs = estado.vendedores.filter(function (v) { return v.cidadeId === c.id; });
+      html += '<div class="eyebrow" style="margin:6px 4px 6px">' + esc(c.nome) + '</div>';
+      if (!vs.length) {
+        html += '<p class="muted" style="margin:0 4px 12px">Nenhum vendedor cadastrado aqui.</p>';
+      } else {
+        html += '<div class="entries" style="margin-bottom:12px">';
+        vs.forEach(function (v) {
+          var qtd = estado.lancamentos.filter(function (l) { return l.vendedorId === v.id; }).length;
+          html += '<div class="seller-row"><span class="seller-name">' + esc(v.nome) + (v.ativo === false ? ' <span class="badge-off">inativo</span>' : '') + '</span>' +
+            '<span class="muted">' + qtd + ' lanç.</span>' +
+            '<button class="btn btn-sm btn-ghost" type="button" data-acao="editar-vendedor" data-id="' + esc(v.id) + '">Editar</button></div>';
+        });
+        html += '</div>';
+      }
+    });
+
+    html += '<button class="btn btn-ghost btn-block" type="button" data-acao="exportar-resumo">Exportar resumo (CSV para Excel)</button>';
+    html += '</div>';
+    return html;
+  }
+
+  /* ---------- aba: Prêmios ---------- */
+  function viewPremios() {
+    var lista = premiosFiltrados();
+    var comPremio = lista.filter(function (p) { return p.tipo !== 'aproximacao'; });
+    var aproximacoes = lista.length - comPremio.length;
+    var valor = r2(comPremio.reduce(function (s, p) { return s + p.valor; }, 0));
+    var ultimo = lista[0];
+
+    var html = '<div class="stack">';
+    html += '<div class="section-title"><h2>Prêmios e aproximações</h2><span class="eyebrow">Já sorteados</span></div>';
+    html += chipsCidade();
+    html += '<div class="stats">' +
+      stat('Prêmios', numero(comPremio.length)) +
+      stat('Aproximações', numero(aproximacoes)) +
+      stat('Valor em prêmios', moeda(valor), 'stat-gold') +
+      stat('Último sorteio', ultimo ? dataCurta(ultimo.data) : '—') +
+      '</div>';
+    html += '<button class="btn btn-primary btn-block" type="button" data-acao="novo-premio">+ Registrar prêmio ou aproximação</button>';
+
+    var cidadesAlvo = estado.cidade === 'todas' ? CIDADES : CIDADES.filter(function (c) { return c.id === estado.cidade; });
+    cidadesAlvo.forEach(function (c) {
+      var itens = lista.filter(function (p) { return p.cidadeId === c.id; });
+      html += '<div><div class="section-title"><h2>' + esc(c.nome) + '</h2><span class="eyebrow">' +
+        itens.length + ' registro' + (itens.length === 1 ? '' : 's') + '</span></div>';
+      html += itens.length
+        ? '<div class="entries">' + itens.map(itemPremio).join('') + '</div>'
+        : '<div class="empty"><strong>Nenhum prêmio registrado</strong>Use o botão acima quando sair um prêmio ou aproximação.</div>';
+      html += '</div>';
+    });
+    html += '</div>';
+    return html;
+  }
+
+  /* ---------- aba: Ajustes ---------- */
+  function viewAjustes() {
+    var p = estado.params;
+    var html = '<div class="stack">';
+    html += '<div class="section-title"><h2>Ajustes</h2><span class="eyebrow">Parâmetros do negócio</span></div>';
+
+    html += '<div class="card"><div class="card-body"><div class="stack">' +
+      '<div class="field"><label for="p-empresa">Nome da empresa</label>' +
+      '<input class="input" type="text" id="p-empresa" maxlength="40" data-param="empresa" value="' + esc(p.empresa) + '"></div>' +
+      '<div class="grid-2">' +
+      campoNumero('p-valor', 'Valor do bilhete (R$)', 'valorBilhete', p.valorBilhete, '0.01') +
+      campoNumero('p-limite', 'Limite de bilhetes/dia', 'limite', p.limite, '1') +
+      campoNumero('p-baixa', 'Comissão abaixo do limite (R$)', 'comissaoBaixa', p.comissaoBaixa, '0.01') +
+      campoNumero('p-alta', 'Comissão a partir do limite (R$)', 'comissaoAlta', p.comissaoAlta, '0.01') +
+      '</div>' +
+      '<p class="muted" style="margin:0">Alterações valem para os próximos lançamentos. Os já registrados guardam os valores usados no dia.</p>' +
+      '</div></div></div>';
+
+    html += '<div class="section-title"><h2>Seus dados</h2></div>';
+    html += '<div class="card"><div class="card-body"><div class="stack">' +
+      '<p class="muted" style="margin:0">' + esc(textoSincronizacao()) + '</p>' +
+      '<div class="inline-actions">' +
+      '<button class="btn btn-ghost btn-sm" type="button" data-acao="exportar-csv">Vendas (CSV)</button>' +
+      '<button class="btn btn-ghost btn-sm" type="button" data-acao="exportar-resumo">Resumo (CSV)</button>' +
+      '<button class="btn btn-ghost btn-sm" type="button" data-acao="exportar-premios">Prêmios (CSV)</button>' +
+      '<button class="btn btn-ghost btn-sm" type="button" data-acao="backup">Backup completo (JSON)</button>' +
+      '<button class="btn btn-ghost btn-sm" type="button" data-acao="importar">Restaurar backup</button>' +
+      '</div>' +
+      '<input type="file" id="arquivo-backup" accept="application/json,.json" hidden>' +
+      '<hr class="divider">' +
+      '<div class="inline-actions">' +
+      '<button class="btn btn-ghost btn-sm" type="button" data-acao="sair">Sair desta conta</button>' +
+      '<button class="btn btn-danger btn-sm" type="button" data-acao="apagar-tudo">Apagar todos os lançamentos</button>' +
+      '</div></div></div></div>';
+
+    html += '<div class="card"><div class="card-body">' +
+      '<span class="eyebrow">Como instalar no iPhone / iPad</span>' +
+      '<ol class="muted" style="margin:8px 0 0;padding-left:18px;line-height:1.7">' +
+      '<li>Abra este endereço no Safari.</li><li>Toque no botão Compartilhar.</li>' +
+      '<li>Escolha “Adicionar à Tela de Início”.</li></ol></div></div>';
+    html += '</div>';
+    return html;
+  }
+
+  function textoSincronizacao() {
+    if (estado.status === 'offline') return 'Sem conexão agora. As alterações ficam salvas neste aparelho e vão para a nuvem quando a conexão voltar.';
+    return 'Os dados ficam guardados na nuvem. Entre com a sua conta em qualquer aparelho e tudo aparece igual.';
+  }
+
+  function campoNumero(id, rotulo, param, valor, passo) {
+    return '<div class="field"><label for="' + id + '">' + esc(rotulo) + '</label>' +
+      '<input class="input input-money" type="number" inputmode="decimal" min="0" step="' + passo + '" id="' + id + '" data-param="' + param + '" value="' + esc(valor) + '"></div>';
+  }
+
+  /* ---------- modais ---------- */
+  function abrirModal(m) { estado.modal = m; render(); }
+  function fecharModal() {
+    if (estado.modal && estado.modal.tipo === 'senha') return; /* a senha é obrigatória */
+    estado.modal = null;
+    render();
+  }
+
+  function selectCidade(id, atual) {
+    return '<select class="select" id="' + id + '">' + CIDADES.map(function (c) {
+      return '<option value="' + c.id + '"' + (c.id === atual ? ' selected' : '') + '>' + esc(c.nome) + '</option>';
+    }).join('') + '</select>';
+  }
+
+  function viewModal() {
+    var m = estado.modal;
+    if (!m) return '';
+    var corpo = '';
+
+    if (m.tipo === 'senha') {
+      corpo = '<h2>Entrar</h2>' +
+        '<p class="sheet-sub">Use o e-mail e a senha da sua conta. Cada pessoa tem a sua.</p>' +
+        '<div class="stack">' +
+        '<div class="field"><label for="m-email">E-mail</label>' +
+        '<input class="input" type="email" id="m-email" autocomplete="username" inputmode="email"></div>' +
+        '<div class="field"><label for="m-senha">Senha</label>' +
+        '<input class="input" type="password" id="m-senha" autocomplete="current-password"></div></div>' +
+        '<div class="sheet-actions"><button class="btn btn-primary" type="button" data-acao="entrar">Entrar</button></div>';
+
+    } else if (m.tipo === 'vendedor') {
+      var editando = !!m.dados.id;
+      var cidadeAtual = m.dados.cidadeId || (estado.cidade !== 'todas' ? estado.cidade : CIDADES[0].id);
+      corpo = '<h2>' + (editando ? 'Editar vendedor' : 'Novo vendedor') + '</h2>' +
+        '<p class="sheet-sub">O nome e a cidade aparecem nos lançamentos e no resumo.</p>' +
+        '<div class="stack">' +
+        '<div class="field"><label for="m-nome">Nome</label><input class="input" type="text" id="m-nome" maxlength="40" value="' + esc(m.dados.nome || '') + '" placeholder="Ex.: João Silva"></div>' +
+        '<div class="field"><label for="m-cidade">Cidade</label>' + selectCidade('m-cidade', cidadeAtual) + '</div>';
+      if (editando) {
+        corpo += '<label class="field check"><input type="checkbox" id="m-ativo"' + (m.dados.ativo !== false ? ' checked' : '') + '><span>Ativo (aparece na lista de lançamento)</span></label>';
+      }
+      corpo += '</div><div class="sheet-actions">' +
+        '<button class="btn btn-ghost" type="button" data-acao="fechar-modal">Cancelar</button>' +
+        '<button class="btn btn-primary" type="button" data-acao="confirmar-vendedor">Salvar</button></div>';
+      if (editando) {
+        corpo += '<button class="btn btn-danger btn-block btn-sm" type="button" data-acao="apagar-vendedor" data-id="' + esc(m.dados.id) + '" style="margin-top:10px">Excluir vendedor</button>';
+      }
+
+    } else if (m.tipo === 'lancamento') {
+      var l = m.dados;
+      var c = calcular(l);
+      var doCidade = estado.vendedores.filter(function (v) { return v.cidadeId === l.cidadeId; });
+      corpo = '<h2>Editar lançamento</h2>' +
+        '<p class="sheet-sub">' + esc(cidadeNome(l.cidadeId)) + ' · ' + esc(dataLonga(l.data)) + '</p>' +
+        '<div class="stack">' +
+        '<div class="field"><label for="m-data">Data</label><input class="input" type="date" id="m-data" value="' + esc(l.data) + '"></div>' +
+        '<div class="field"><label for="m-vendedor">Vendedor</label><select class="select" id="m-vendedor">' +
+        doCidade.map(function (v) {
+          return '<option value="' + esc(v.id) + '"' + (v.id === l.vendedorId ? ' selected' : '') + '>' + esc(v.nome) + '</option>';
+        }).join('') + '</select></div>' +
+        '<div class="field"><label for="m-bilhetes">Bilhetes vendidos</label>' +
+        '<input class="input input-money" type="number" inputmode="numeric" min="0" step="1" id="m-bilhetes" value="' + esc(l.bilhetes) + '"></div>' +
+        '<div class="grid-2">' +
+        '<div class="field"><label for="m-valor">Valor do bilhete</label><input class="input input-money" type="number" inputmode="decimal" min="0" step="0.01" id="m-valor" value="' + esc(l.valorBilhete) + '"></div>' +
+        '<div class="field"><label for="m-unit">Comissão/bilhete</label><input class="input input-money" type="number" inputmode="decimal" min="0" step="0.01" id="m-unit" value="' + esc(l.comissaoUnit) + '"></div>' +
+        '</div>' +
+        '<div class="field"><label for="m-obs">Observação</label><input class="input" type="text" id="m-obs" maxlength="120" value="' + esc(l.obs || '') + '"></div>' +
+        '<p class="muted" style="margin:0">Faturamento ' + esc(moeda(c.faturamento)) + ' · comissão ' + esc(moeda(c.comissao)) + ' · lucro ' + esc(moeda(c.lucro)) + '</p>' +
+        '<label class="field check"><input type="checkbox" id="m-recalcular"><span>Recalcular a comissão pelos parâmetros atuais</span></label>' +
+        '</div>' +
+        '<div class="sheet-actions">' +
+        '<button class="btn btn-ghost" type="button" data-acao="fechar-modal">Cancelar</button>' +
+        '<button class="btn btn-primary" type="button" data-acao="confirmar-lancamento" data-id="' + esc(l.id) + '">Salvar</button></div>' +
+        '<button class="btn btn-danger btn-block btn-sm" type="button" data-acao="apagar-lancamento" data-id="' + esc(l.id) + '" style="margin-top:10px">Excluir lançamento</button>';
+
+    } else if (m.tipo === 'premio') {
+      var pr = m.dados;
+      var editandoP = !!pr.id;
+      corpo = '<h2>' + (editandoP ? 'Editar prêmio' : 'Novo prêmio ou aproximação') + '</h2>' +
+        '<p class="sheet-sub">Registre o número sorteado e quem ganhou, se houver.</p>' +
+        '<div class="stack">' +
+        '<div class="grid-2">' +
+        '<div class="field"><label for="m-pdata">Data do sorteio</label><input class="input" type="date" id="m-pdata" value="' + esc(pr.data || hoje()) + '"></div>' +
+        '<div class="field"><label for="m-pcidade">Cidade</label>' + selectCidade('m-pcidade', pr.cidadeId || (estado.cidade !== 'todas' ? estado.cidade : CIDADES[0].id)) + '</div>' +
+        '</div>' +
+        '<div class="grid-2">' +
+        '<div class="field"><label for="m-ptipo">Tipo</label><select class="select" id="m-ptipo">' +
+        '<option value="premio"' + (pr.tipo !== 'aproximacao' ? ' selected' : '') + '>Prêmio</option>' +
+        '<option value="aproximacao"' + (pr.tipo === 'aproximacao' ? ' selected' : '') + '>Aproximação</option></select></div>' +
+        '<div class="field"><label for="m-pnumero">Número sorteado</label><input class="input" type="text" inputmode="numeric" maxlength="12" id="m-pnumero" value="' + esc(pr.numero || '') + '" placeholder="Ex.: 0427"></div>' +
+        '</div>' +
+        '<div class="grid-2">' +
+        '<div class="field"><label for="m-pganhador">Ganhador</label><input class="input" type="text" id="m-pganhador" maxlength="60" value="' + esc(pr.ganhador || '') + '" placeholder="Opcional"></div>' +
+        '<div class="field"><label for="m-pvalor">Valor (R$)</label><input class="input input-money" type="number" inputmode="decimal" min="0" step="0.01" id="m-pvalor" value="' + esc(pr.valor || '') + '" placeholder="0,00"></div>' +
+        '</div>' +
+        '<div class="field"><label for="m-pobs">Observação</label><input class="input" type="text" id="m-pobs" maxlength="120" value="' + esc(pr.obs || '') + '"></div>' +
+        '</div>' +
+        '<div class="sheet-actions"><button class="btn btn-ghost" type="button" data-acao="fechar-modal">Cancelar</button>' +
+        '<button class="btn btn-primary" type="button" data-acao="confirmar-premio" data-id="' + esc(pr.id || '') + '">Salvar</button></div>';
+      if (editandoP) {
+        corpo += '<button class="btn btn-danger btn-block btn-sm" type="button" data-acao="apagar-premio" data-id="' + esc(pr.id) + '" style="margin-top:10px">Excluir registro</button>';
+      }
+
+    } else if (m.tipo === 'duplicado') {
+      var ex = m.dados.existente;
+      corpo = '<h2>Já existe lançamento</h2>' +
+        '<p class="sheet-sub">' + esc(nomeVendedor(ex)) + ' já tem ' + numero(ex.bilhetes) + ' bilhetes em ' + esc(dataCurta(ex.data)) + '.</p>' +
+        '<div class="stack">' +
+        '<button class="btn btn-primary btn-block" type="button" data-acao="somar-duplicado">Somar: ficam ' + numero(Number(ex.bilhetes) + Number(m.dados.bilhetes)) + ' bilhetes</button>' +
+        '<button class="btn btn-ghost btn-block" type="button" data-acao="separar-duplicado">Registrar em separado</button>' +
+        '<button class="btn btn-ghost btn-block btn-sm" type="button" data-acao="fechar-modal">Cancelar</button></div>';
+
+    } else if (m.tipo === 'confirmar') {
+      corpo = '<h2>' + esc(m.dados.titulo) + '</h2>' +
+        '<p class="sheet-sub">' + esc(m.dados.texto) + '</p>' +
+        '<div class="sheet-actions"><button class="btn btn-ghost" type="button" data-acao="fechar-modal">Cancelar</button>' +
+        '<button class="btn btn-danger" type="button" data-acao="' + esc(m.dados.acao) + '">' + esc(m.dados.confirmar) + '</button></div>';
+    }
+
+    return '<div class="scrim" data-acao="scrim"><div class="sheet" role="dialog" aria-modal="true">' + corpo + '</div></div>';
+  }
+
+  /* ---------- exportação ---------- */
+  function csvValor(v) {
+    var s = String(v == null ? '' : v);
+    if (typeof v === 'number') s = String(v).replace('.', ',');
+    return /[";\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  }
+  function linhasCsv(linhas) { return linhas.map(function (l) { return l.map(csvValor).join(';'); }).join('\r\n'); }
+
+  function montarCsvVendas() {
+    var linhas = [['Data', 'Cidade', 'Vendedor', 'Bilhetes vendidos', 'Valor do bilhete', 'Comissao/bilhete', 'Comissao total', 'Faturamento', 'Lucro empresa', 'Observacao']];
+    var lista = lancamentosDoPeriodo(true);
+    lista.slice().reverse().forEach(function (l) {
+      var c = calcular(l);
+      linhas.push([dataCurta(l.data) + '/' + paraData(l.data).getFullYear(), cidadeNome(l.cidadeId), nomeVendedor(l),
+        c.bilhetes, Number(l.valorBilhete), Number(l.comissaoUnit), c.comissao, c.faturamento, c.lucro, l.obs || '']);
+    });
+    var t = totalizar(lista);
+    linhas.push([]);
+    linhas.push(['TOTAL', '', '', t.bilhetes, '', '', t.comissao, t.faturamento, t.lucro, '']);
+    return linhasCsv(linhas);
+  }
+
+  function montarCsvResumo() {
+    var linhas = [['Cidade', 'Vendedor', 'Bilhetes vendidos', 'Comissao total', 'Faturamento', 'Lucro empresa', 'Dias com venda']];
+    var lista = lancamentosDoPeriodo(false);
+    resumoPorVendedor(lista).forEach(function (v) {
+      linhas.push([cidadeNome(v.cidadeId), v.nome, v.bilhetes, v.comissao, v.faturamento, v.lucro, v.diasTrabalhados]);
+    });
+    var t = totalizar(lista);
+    linhas.push(['', 'TOTAL GERAL', t.bilhetes, t.comissao, t.faturamento, t.lucro, '']);
+    return linhasCsv(linhas);
+  }
+
+  function montarCsvPremios() {
+    var linhas = [['Data', 'Cidade', 'Tipo', 'Numero', 'Ganhador', 'Valor', 'Observacao']];
+    premiosFiltrados().forEach(function (p) {
+      linhas.push([dataCurta(p.data) + '/' + paraData(p.data).getFullYear(), cidadeNome(p.cidadeId),
+        p.tipo === 'aproximacao' ? 'Aproximacao' : 'Premio', p.numero, p.ganhador, p.valor, p.obs]);
+    });
+    return linhasCsv(linhas);
+  }
+
+  function baixar(nome, conteudo, mime) {
+    if (mime === 'text/csv') conteudo = '﻿' + conteudo;
+    try {
+      var blob = new Blob([conteudo], { type: mime });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url; a.download = nome;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
+      aviso('Arquivo gerado.');
+    } catch (e) {
+      aviso('Este navegador não permitiu baixar o arquivo.', 'erro');
+    }
+  }
+
+  function restaurarBackup(texto) {
+    var d;
+    try { d = JSON.parse(texto); } catch (e) { return aviso('Arquivo inválido.', 'erro'); }
+    if (!d || !Array.isArray(d.lancamentos)) return aviso('Arquivo não parece um backup deste app.', 'erro');
+    aplicarDocumento(d);
+    salvar();
+    aviso('Backup restaurado.');
+    render();
+  }
+
+  /* ---------- avisos ---------- */
+  var timerAviso = null;
+  function aviso(texto, tipo) {
+    var el = document.getElementById('aviso');
+    if (!el) return;
+    el.textContent = texto;
+    el.hidden = false;
+    el.setAttribute('data-kind', tipo || 'ok');
+    clearTimeout(timerAviso);
+    timerAviso = setTimeout(function () { el.hidden = true; }, 3200);
+  }
+
+  /* ---------- render ---------- */
+  function render() {
+    var raiz = document.getElementById('root');
+    var conteudo = estado.aba === 'resumo' ? viewResumo()
+      : estado.aba === 'lancar' ? viewLancar()
+      : estado.aba === 'vendas' ? viewVendas()
+      : estado.aba === 'vendedores' ? viewVendedores()
+      : estado.aba === 'premios' ? viewPremios()
+      : viewAjustes();
+
+    var iniciais = String(estado.params.empresa || 'BP').trim().split(/\s+/).slice(0, 2)
+      .map(function (p) { return p[0]; }).join('').toUpperCase() || 'BP';
+
+    var rotuloSync = estado.status === 'sincronizado' ? 'Sincronizado'
+      : (estado.status === 'salvando' || estado.status === 'pendente') ? 'Salvando…'
+      : estado.status === 'offline' ? 'Sem conexão · salvo neste aparelho'
+      : estado.status === 'senha' ? 'Aguardando senha' : 'Carregando…';
+    var estadoSync = estado.status === 'sincronizado' ? 'ok'
+      : (estado.status === 'salvando' || estado.status === 'pendente') ? 'pendente'
+      : estado.status === 'offline' ? 'offline' : 'carregando';
+
+    raiz.innerHTML =
+      '<div class="app">' +
+      '<header class="topbar"><div class="topbar-inner">' +
+      '<div class="brand"><span class="brand-mark" aria-hidden="true">' + esc(iniciais) + '</span>' +
+      '<span style="min-width:0"><span class="brand-name">' + esc(estado.params.empresa || 'Bilhete Premiado') + '</span>' +
+      '<span class="brand-sub">Controle de vendas</span></span></div>' +
+      '<span class="sync-dot" data-state="' + estadoSync + '">' + esc(rotuloSync) + '</span>' +
+      '</div></header>' +
+      '<main>' + conteudo + '</main>' +
+      '<nav class="tabbar"><div class="tabbar-inner">' +
+      ABAS.map(function (a) {
+        return '<button class="tab" type="button" data-acao="aba" data-valor="' + a.id + '"' +
+          (estado.aba === a.id ? ' aria-current="page"' : '') + '>' + icone(a.id) + '<span>' + esc(a.rotulo) + '</span></button>';
+      }).join('') +
+      '</div></nav></div>' +
+      viewModal() +
+      '<div class="toast" id="aviso" role="status" hidden></div>';
+  }
+
+  /* ---------- eventos ---------- */
+  function acaoDe(alvo) {
+    var el = alvo.closest('[data-acao]');
+    return el ? { acao: el.getAttribute('data-acao'), valor: el.getAttribute('data-valor'), id: el.getAttribute('data-id'), el: el } : null;
+  }
+
+  function ligarEventos() {
+    var raiz = document.getElementById('root');
+
+    raiz.addEventListener('click', function (ev) {
+      var a = acaoDe(ev.target);
+      if (!a) return;
+      if (a.acao === 'scrim' && ev.target !== a.el) return;
+
+      switch (a.acao) {
+        case 'aba':
+          estado.aba = a.valor; render(); window.scrollTo({ top: 0 }); break;
+        case 'cidade':
+          estado.cidade = a.valor; estado.filtroVendedor = ''; render(); break;
+        case 'periodo':
+          estado.periodo = a.valor;
+          if (a.valor === 'custom' && !estado.de) { estado.de = somaDias(hoje(), -30); estado.ate = hoje(); }
+          render(); break;
+        case 'salvar-lancamento':
+          salvarDoRascunho(); break;
+        case 'novo-vendedor':
+          abrirModal({ tipo: 'vendedor', dados: { cidadeId: rascunho.cidadeId || '' } }); break;
+        case 'editar-vendedor':
+          abrirModal({ tipo: 'vendedor', dados: Object.assign({}, estado.vendedores.filter(function (v) { return v.id === a.id; })[0]) }); break;
+        case 'confirmar-vendedor':
+          confirmarVendedor(); break;
+        case 'apagar-vendedor':
+          apagarVendedor(a.id); break;
+        case 'editar-lancamento':
+          abrirLancamento(a.id); break;
+        case 'confirmar-lancamento':
+          confirmarLancamento(a.id); break;
+        case 'apagar-lancamento':
+          estado.lancamentos = estado.lancamentos.filter(function (l) { return l.id !== a.id; });
+          salvar(); fecharModal(); aviso('Lançamento excluído.'); break;
+        case 'somar-duplicado': {
+          var d = estado.modal.dados;
+          var alvo = estado.lancamentos.filter(function (l) { return l.id === d.existente.id; })[0];
+          alvo.bilhetes = Number(alvo.bilhetes) + Number(d.bilhetes);
+          alvo.comissaoUnit = comissaoUnitaria(alvo.bilhetes, estado.params);
+          salvar();
+          rascunho.bilhetes = ''; rascunho.obs = '';
+          fecharModal(); aviso('Somado: ' + numero(alvo.bilhetes) + ' bilhetes no dia.');
+          break;
+        }
+        case 'separar-duplicado': {
+          var b = estado.modal.dados.bilhetes;
+          estado.modal = null;
+          gravarNovoLancamento(b);
+          break;
+        }
+        case 'novo-premio':
+          abrirPremio(null); break;
+        case 'editar-premio':
+          abrirPremio(a.id); break;
+        case 'confirmar-premio':
+          confirmarPremio(a.id); break;
+        case 'apagar-premio':
+          estado.premios = estado.premios.filter(function (p) { return p.id !== a.id; });
+          salvar(); fecharModal(); aviso('Registro excluído.'); break;
+        case 'fechar-modal':
+        case 'scrim':
+          fecharModal(); break;
+        case 'entrar':
+          entrarComSenha(); break;
+        case 'sair':
+          sair(); break;
+        case 'exportar-csv':
+          baixar('vendas-bilhetes-' + hoje() + '.csv', montarCsvVendas(), 'text/csv'); break;
+        case 'exportar-resumo':
+          baixar('resumo-vendedores-' + hoje() + '.csv', montarCsvResumo(), 'text/csv'); break;
+        case 'exportar-premios':
+          baixar('premios-e-aproximacoes-' + hoje() + '.csv', montarCsvPremios(), 'text/csv'); break;
+        case 'backup':
+          baixar('backup-bilhetes-' + hoje() + '.json', JSON.stringify(Object.assign({ gerado: new Date().toISOString() }, documento()), null, 2), 'application/json'); break;
+        case 'importar': {
+          var input = document.getElementById('arquivo-backup');
+          if (input) input.click();
+          break;
+        }
+        case 'apagar-tudo':
+          abrirModal({ tipo: 'confirmar', dados: {
+            titulo: 'Apagar todos os lançamentos?',
+            texto: 'Os ' + estado.lancamentos.length + ' lançamentos serão excluídos. Vendedores, prêmios e parâmetros continuam. Não dá para desfazer.',
+            confirmar: 'Apagar tudo', acao: 'confirmar-apagar-tudo'
+          } });
+          break;
+        case 'confirmar-apagar-tudo':
+          estado.lancamentos = [];
+          salvar(); fecharModal(); aviso('Lançamentos apagados.');
+          break;
+      }
+    });
+
+    raiz.addEventListener('input', function (ev) {
+      var campo = ev.target.getAttribute('data-campo');
+      if (campo) {
+        if (campo === 'cidadeId') return; /* tratado no change */
+        rascunho[campo] = ev.target.value;
+        if (campo === 'bilhetes') atualizarPrevia();
+        return;
+      }
+      var param = ev.target.getAttribute('data-param');
+      if (param) {
+        estado.params[param] = param === 'empresa' ? ev.target.value : (Number(ev.target.value) || 0);
+        clearTimeout(timerParams);
+        timerParams = setTimeout(salvar, 500);
+      }
+    });
+
+    raiz.addEventListener('change', function (ev) {
+      var campo = ev.target.getAttribute('data-campo');
+      if (campo === 'cidadeId') {
+        rascunho.cidadeId = ev.target.value;
+        rascunho.vendedorId = '';
+        render();
+        return;
+      }
+      if (campo) { rascunho[campo] = ev.target.value; return; }
+      var a = acaoDe(ev.target);
+      if (!a) return;
+      if (a.acao === 'filtro-vendedor') { estado.filtroVendedor = ev.target.value; render(); }
+      if (a.acao === 'data-de') { estado.de = ev.target.value; render(); }
+      if (a.acao === 'data-ate') { estado.ate = ev.target.value; render(); }
+    });
+
+    document.addEventListener('change', function (ev) {
+      if (ev.target.id !== 'arquivo-backup' || !ev.target.files || !ev.target.files[0]) return;
+      var leitor = new FileReader();
+      leitor.onload = function () { restaurarBackup(String(leitor.result)); };
+      leitor.readAsText(ev.target.files[0]);
+      ev.target.value = '';
+    });
+
+    document.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Escape' && estado.modal) fecharModal();
+      if (ev.key === 'Enter' && estado.modal && estado.modal.tipo === 'senha') entrarComSenha();
+    });
+
+    /* Ao voltar para o app (outro aparelho pode ter mudado algo), recarrega. */
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState !== 'visible') return;
+      var editando = document.activeElement && /^(INPUT|SELECT|TEXTAREA)$/.test(document.activeElement.tagName);
+      if (!editando && !estado.modal && estado.status !== 'senha') carregarDoServidor();
+    });
+    window.addEventListener('online', function () { if (estado.pendente) enviar(); else carregarDoServidor(); });
+    setInterval(function () { if (estado.pendente && !enviando) enviar(); }, 15000);
+  }
+
+  var timerParams = null;
+
+  function pedirSenha() {
+    estado.status = 'senha';
+    if (estado.modal && estado.modal.tipo === 'senha') return;
+    estado.modal = { tipo: 'senha', dados: {} };
+    render();
+    setTimeout(function () { var el = document.getElementById('m-email'); if (el) el.focus(); }, 50);
+  }
+
+  var MSG_LOGIN = {
+    'auth/invalid-credential': 'E-mail ou senha incorretos.',
+    'auth/invalid-email': 'E-mail inválido.',
+    'auth/missing-password': 'Digite a senha.',
+    'auth/too-many-requests': 'Muitas tentativas. Espere alguns minutos.',
+    'auth/network-request-failed': 'Sem conexão com a internet.'
+  };
+
+  function entrarComSenha() {
+    var email = (document.getElementById('m-email').value || '').trim();
+    var senha = document.getElementById('m-senha').value || '';
+    if (!email) return aviso('Digite o e-mail.', 'erro');
+    if (!senha) return aviso('Digite a senha.', 'erro');
+    aviso('Entrando…');
+    signInWithEmailAndPassword(auth, email, senha).catch(function (e) {
+      aviso(MSG_LOGIN[e.code] || 'Não foi possível entrar. Tente de novo.', 'erro');
+    });
+  }
+
+  function sair() {
+    signOut(auth).then(function () {
+      try { localStorage.removeItem(CHAVE_CACHE); } catch (e) {}
+      estado.lancamentos = []; estado.vendedores = []; estado.premios = [];
+      estado.modal = null;
+      estado.status = 'senha';
+      pedirSenha();
+    });
+  }
+
+  function abrirLancamento(id) {
+    var l = estado.lancamentos.filter(function (x) { return x.id === id; })[0];
+    if (!l) return;
+    abrirModal({ tipo: 'lancamento', dados: Object.assign({}, l) });
+  }
+
+  function abrirPremio(id) {
+    var p = id ? estado.premios.filter(function (x) { return x.id === id; })[0] : null;
+    abrirModal({ tipo: 'premio', dados: p ? Object.assign({}, p) : { data: hoje(), tipo: 'premio', numero: '', ganhador: '', valor: '', obs: '' } });
+  }
+
+  function confirmarPremio(id) {
+    var numeroSorteado = (document.getElementById('m-pnumero').value || '').trim();
+    var dataP = document.getElementById('m-pdata').value;
+    if (!dataP) return aviso('Informe a data do sorteio.', 'erro');
+    if (!numeroSorteado) return aviso('Informe o número sorteado.', 'erro');
+    var dados = {
+      data: dataP,
+      cidadeId: document.getElementById('m-pcidade').value,
+      tipo: document.getElementById('m-ptipo').value === 'aproximacao' ? 'aproximacao' : 'premio',
+      numero: numeroSorteado,
+      ganhador: (document.getElementById('m-pganhador').value || '').trim(),
+      valor: Number(document.getElementById('m-pvalor').value) || 0,
+      obs: (document.getElementById('m-pobs').value || '').trim()
+    };
+    var existente = id ? estado.premios.filter(function (p) { return p.id === id; })[0] : null;
+    if (existente) {
+      Object.assign(existente, dados);
+    } else {
+      estado.premios.push(Object.assign({ id: novoId(), criadoEm: new Date().toISOString() }, dados));
+    }
+    salvar();
+    fecharModal();
+    aviso('Registro salvo.');
+  }
+
+  function confirmarVendedor() {
+    var nome = (document.getElementById('m-nome').value || '').trim();
+    if (!nome) return aviso('Informe o nome do vendedor.', 'erro');
+    var cidadeId = document.getElementById('m-cidade').value;
+    var ativoEl = document.getElementById('m-ativo');
+    var dados = estado.modal.dados;
+
+    if (dados.id) {
+      var v = estado.vendedores.filter(function (x) { return x.id === dados.id; })[0];
+      if (v) {
+        v.nome = nome;
+        v.cidadeId = cidadeId;
+        v.ativo = ativoEl ? ativoEl.checked : true;
+      }
+    } else {
+      var novo = { id: novoId(), nome: nome, cidadeId: cidadeId, ativo: true, criadoEm: hoje() };
+      estado.vendedores.push(novo);
+      if (rascunho.cidadeId === cidadeId) rascunho.vendedorId = novo.id;
+    }
+    salvar();
+    fecharModal();
+    aviso('Vendedor salvo.');
+  }
+
+  function apagarVendedor(id) {
+    var usados = estado.lancamentos.filter(function (l) { return l.vendedorId === id; }).length;
+    if (usados) {
+      aviso('Esse vendedor tem ' + usados + ' lançamentos. Marque como inativo.', 'erro');
+      return;
+    }
+    estado.vendedores = estado.vendedores.filter(function (v) { return v.id !== id; });
+    salvar();
+    fecharModal();
+    aviso('Vendedor excluído.');
+  }
+
+  function confirmarLancamento(id) {
+    var l = estado.lancamentos.filter(function (x) { return x.id === id; })[0];
+    if (!l) return fecharModal();
+    var bilhetes = Math.floor(Number(document.getElementById('m-bilhetes').value) || 0);
+    if (!(bilhetes > 0)) return aviso('Informe os bilhetes vendidos.', 'erro');
+
+    l.data = document.getElementById('m-data').value || l.data;
+    var sel = document.getElementById('m-vendedor');
+    if (sel && sel.value) {
+      l.vendedorId = sel.value;
+      var v = estado.vendedores.filter(function (x) { return x.id === sel.value; })[0];
+      l.vendedorNome = v ? v.nome : l.vendedorNome;
+    }
+    l.bilhetes = bilhetes;
+    l.valorBilhete = Number(document.getElementById('m-valor').value) || 0;
+    l.obs = document.getElementById('m-obs').value || '';
+    var recalcular = document.getElementById('m-recalcular');
+    l.comissaoUnit = (recalcular && recalcular.checked)
+      ? comissaoUnitaria(bilhetes, estado.params)
+      : (Number(document.getElementById('m-unit').value) || 0);
+
+    salvar();
+    fecharModal();
+    aviso('Lançamento atualizado.');
+  }
+
+  /* ---------- início ---------- */
+  function iniciar() {
+    var c = Cache.ler();
+    if (c) aplicarDocumento(c);
+    ligarEventos();
+    render();
+    onAuthStateChanged(auth, function (user) {
+      if (user) {
+        estado.modal = null;
+        carregarDoServidor();
+      } else {
+        pedirSenha();
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', iniciar);
+  } else {
+    iniciar();
+  }
+})();
+</script>
+</body>
+</html>

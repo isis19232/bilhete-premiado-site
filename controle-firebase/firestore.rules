@@ -1,0 +1,14 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Só as contas listadas abaixo leem e gravam os dados do controle.
+    // Troque pelos e-mails reais de cada pessoa (um por linha, entre aspas, separados por vírgula).
+    match /dados/{documento} {
+      allow read, write: if request.auth != null
+        && request.auth.token.email in [
+          "pessoa1@exemplo.com",
+          "pessoa2@exemplo.com"
+        ];
+    }
+  }
+}

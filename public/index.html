@@ -73,22 +73,22 @@
       <details><summary>Onde encontro os resultados?</summary><p>Nos canais oficiais do Bilhete Premiado.</p></details>
       <details><summary>Quem pode participar?</summary><p>Maiores de 18 anos, conforme regulamento e autorizações aplicáveis.</p></details>
     </div></section>
-    <section id="contato" class="cta"><p class="section-kicker">BILHETE PREMIADO</p><h2>QUER SABER MAIS?</h2><p>Tire suas dúvidas com nossa equipe pelo WhatsApp.</p><a href="#" class="btn btn-gold" id="whatsapp-link">FALAR PELO WHATSAPP</a><p class="contact-note">Configure o número oficial de WhatsApp antes de publicar este botão.</p></section>
+    <section id="contato" class="cta"><p class="section-kicker">BILHETE PREMIADO</p><h2>QUER SABER MAIS?</h2><p>Tire suas dúvidas com nossa equipe pelo WhatsApp.</p><a href="https://wa.me/559984760015" class="btn btn-gold" id="whatsapp-link" target="_blank" rel="noopener noreferrer">FALAR PELO WHATSAPP</a><address class="contact-details">
+      <a href="tel:+559984760015">Telefone: (99) 8476-0015</a>
+      <a href="mailto:FILIPIFIGUEIREDO@HOTMAIL.COM">FILIPIFIGUEIREDO@HOTMAIL.COM</a>
+    </address></section>
   </main>
-  <footer class="footer">© <span id="year">2026</span> Bilhete Premiado. Conteúdo informativo. Proibido para menores de 18 anos.</footer>
+  <footer class="footer">
+    <div class="company-details">
+      <h2>Dados da empresa</h2>
+      <p><strong>F A FIGUEIREDO LTDA</strong></p>
+      <p>CNPJ: 67.983.899/0001-80 · Matriz · Situação cadastral: ativa</p>
+      <address>R Bonaire, 427, Andar 01 Letra B, Centro<br>Açailândia-MA · CEP 65.930-000</address>
+    </div>
+    <p class="footer-notice">© <span id="year">2026</span> Bilhete Premiado. Conteúdo informativo. Proibido para menores de 18 anos.</p>
+  </footer>
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
-    // Substitua pelo número oficial com DDI 55, DDD e número, apenas dígitos.
-    const WHATSAPP_NUMERO = '';
-    const whatsapp = document.getElementById('whatsapp-link');
-    if (WHATSAPP_NUMERO) {
-      whatsapp.href = 'https://wa.me/' + WHATSAPP_NUMERO;
-      whatsapp.target = '_blank';
-      whatsapp.rel = 'noopener noreferrer';
-      document.querySelector('.contact-note').hidden = true;
-    } else {
-      whatsapp.addEventListener('click', function(e) { e.preventDefault(); alert('WhatsApp em configuração.'); });
-    }
   </script>
 </body>
 </html>

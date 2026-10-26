@@ -1,13 +1,10 @@
-# AGENTS.md
+# Arquitetura do projeto
 
-## Architecture
-A static landing page with no build step. Netlify publishes `public/` (see `netlify.toml`).
+Este é o site estático Bilhete Premiado. Os arquivos enviados pelo proprietário foram preservados como base visual e de conteúdo. Não há framework, gerenciador de pacotes ou compilação.
 
-- `public/index.html`: the whole page (nav, hero with ticket illustration, how it works, benefits, FAQ, CTA, footer). The copy is in pt-BR.
-- `public/styles.css`: all styles. Theme tokens are CSS variables in `:root`.
+- `public/index.html`: página inicial em português brasileiro, navegação por âncoras, FAQ com elementos nativos `details` e links externos do WhatsApp.
+- `public/styles.css`: identidade verde e dourada, estilos responsivos, estados de foco e preferência por movimento reduzido.
+- `public/logo.png` e `public/mascote-hero.png`: imagens fornecidas pelo proprietário.
+- `netlify.toml`: publicação da pasta `public`.
 
-## Conventions and decisions
-- The Meta Pixel snippet sits in `<head>` of `index.html`, exactly as the owner supplied it. If you add more pages, copy the snippet into each page's `<head>`. Keep the pixel ID unchanged.
-- Only `PageView` is tracked. If you add conversion events, call `fbq('track', 'Lead')` (or similar) from the CTA buttons.
-- Keep the responsible-gaming notice (18+) in the footer.
-- The primary CTA's `href` is a placeholder (`#`).
+Prefira alterações pontuais e mantenha os caminhos absolutos das imagens e do CSS. Preserve a identidade visual, o conteúdo fornecido, a acessibilidade e o comportamento responsivo. Não adicione ferramentas de build para alterações simples. O Meta Pixel existente pertence ao material fornecido. Não há dados persistidos nem serviços de backend implementados.

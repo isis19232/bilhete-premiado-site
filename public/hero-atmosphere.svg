@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="760" viewBox="0 0 900 760" fill="none">
+<defs>
+ <radialGradient id="spark"><stop stop-color="#fff5c1"/><stop offset=".25" stop-color="#efcc69" stop-opacity=".6"/><stop offset="1" stop-color="#efcc69" stop-opacity="0"/></radialGradient>
+ <linearGradient id="gold" x2="1" y2="1"><stop stop-color="#fff2a6"/><stop offset=".48" stop-color="#dba53b"/><stop offset="1" stop-color="#79511c"/></linearGradient>
+ <linearGradient id="leaf" x2="1" y2="1"><stop stop-color="#52883c"/><stop offset="1" stop-color="#103f26"/></linearGradient>
+ <g id="coin"><ellipse rx="17" ry="27" fill="#79511c"/><ellipse cx="-3" rx="15" ry="27" fill="url(#gold)"/><ellipse cx="-3" rx="11" ry="22" stroke="#fff0a0" stroke-opacity=".55"/><path d="M-3-12V12M3-8C-9-14-13 0-3 0S7 14-7 8" stroke="#926025" stroke-width="2"/></g>
+ <g id="clover" fill="url(#leaf)" stroke="#a4b85b" stroke-opacity=".45"><path d="M0 0C-30-10-24-32-12-26C-3-35 9-21 0 0ZM0 0C10-30 32-24 26-12C35-3 21 9 0 0ZM0 0C30 10 24 32 12 26C3 35-9 21 0 0ZM0 0C-10 30-32 24-26 12C-35 3-21-9 0 0Z"/><path d="M0 0Q-3 23-13 36" stroke="#79a655" stroke-width="3"/></g>
+ <g id="star"><circle r="23" fill="url(#spark)"/><path d="M-13 0Q-1-1 0-14Q1-1 13 0Q1 1 0 14Q-1 1-13 0" fill="#ffecae" opacity=".8"/></g>
+</defs>
+<g opacity=".65"><use href="#coin" transform="translate(185 130) rotate(28)"/><use href="#coin" transform="translate(782 338) rotate(42) scale(.8)"/><use href="#coin" transform="translate(223 590) rotate(-35) scale(.8)"/></g>
+<g opacity=".55"><use href="#clover" transform="translate(788 149) rotate(18) scale(.8)"/><use href="#clover" transform="translate(130 451) rotate(-20) scale(.7)"/></g>
+<use href="#star" transform="translate(165 267)"/><use href="#star" transform="translate(754 587) scale(.8)"/><use href="#star" transform="translate(690 85) scale(.45)"/>
+<g fill="#e6c575" opacity=".5"><circle cx="214" cy="222" r="1.2"/><circle cx="170" cy="349" r="1"/><circle cx="246" cy="340" r="1.5"/><circle cx="180" cy="492" r="1.4"/><circle cx="243" cy="528" r="1"/><circle cx="275" cy="620" r="1.3"/><circle cx="731" cy="251" r="1.5"/><circle cx="802" cy="281" r="1"/><circle cx="755" cy="408" r="1.3"/><circle cx="814" cy="461" r="1.6"/><circle cx="721" cy="510" r="1"/><circle cx="659" cy="641" r="1.3"/><circle cx="340" cy="80" r="1.2"/><circle cx="599" cy="49" r="1"/><circle cx="702" cy="193" r="1"/><circle cx="88" cy="569" r="1"/></g>
+</svg>

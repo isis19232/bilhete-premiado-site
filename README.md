@@ -1,18 +1,13 @@
 # Bilhete Premiado
 
-A one-page landing site for Bilhete Premiado, written in Brazilian Portuguese, with Meta Pixel tracking (pixel ID `3403639113154818`) that fires a `PageView` on every visit.
+Site informativo do Bilhete Premiado, preparado a partir dos arquivos fornecidos. Apresenta os sorteios, explica a dinâmica, responde às dúvidas frequentes e oferece contato pelo WhatsApp.
 
-## Tech
-- Plain static HTML and CSS. No framework and no build step.
-- Hosted on Netlify, which serves the `public/` folder.
+O projeto usa HTML, CSS e JavaScript nativos, sem dependências ou etapa de compilação. O layout adapta-se a celulares e computadores. As fontes são carregadas pelo Google Fonts e o código de Meta Pixel fornecido foi preservado.
 
-## Run locally
-```bash
-netlify dev --port 8889
-```
-Or open `public/index.html` in a browser.
+## Uso local
 
-## Editing
-- Copy and sections: `public/index.html`
-- Colors and layout: `public/styles.css` (theme variables live in `:root`)
-- The "Garantir meu bilhete" call-to-action links to `#` for now. Point it at the real checkout or signup URL.
+Para visualizar localmente, execute `python3 -m http.server 8080 --directory public` e abra `http://localhost:8080`.
+
+## Publicação e manutenção
+
+A Netlify publica a pasta `public`, conforme `netlify.toml`. Edite `public/index.html` para atualizar textos, informações e links de contato; os estilos ficam em `public/styles.css`. As imagens originais estão na mesma pasta. Não há backend, cadastro, compra de bilhetes ou armazenamento de dados no projeto.

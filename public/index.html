@@ -6,11 +6,27 @@
   <meta name="theme-color" content="#062611">
   <title>Bilhete Premiado | Sua sorte começa aqui</title>
   <meta name="description" content="Conheça o Bilhete Premiado. Sorteios de segunda a sábado, prêmio inicial de R$ 500.">
+  <!-- Meta Pixel Code: carregado somente após o consentimento do visitante (LGPD) -->
   <script>
-    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init','3403639113154818');fbq('track','PageView');
+    window.bpLoadMetaPixel = function () {
+      if (window.fbq) return;
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      // Desativa a coleta automática de cliques da Meta: os contatos são enviados apenas pelo evento Contact.
+      fbq('set', 'autoConfig', false, '2095003327789179');
+      fbq('init', '2095003327789179');
+      fbq('track', 'PageView');
+    };
+    try { if (localStorage.getItem('bp_consent') === 'granted') window.bpLoadMetaPixel(); } catch (e) {}
   </script>
-  <noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=3403639113154818&amp;ev=PageView&amp;noscript=1"></noscript>
+  <!-- End Meta Pixel Code -->
+  <script src="/pixel-events.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@600;700;800;900&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -23,7 +39,7 @@
       <a href="#como-funciona">Como funciona</a>
       <a href="#informacoes">Informações</a>
       <a href="#faq">Dúvidas</a>
-      <a href="https://wa.me/5599991838887" class="nav-contact" target="_blank" rel="noopener noreferrer"><svg class="whatsapp-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M27 15.5a11 11 0 0 1-16.2 9.7L5 27l1.8-5.6A11 11 0 1 1 27 15.5Z"/><path d="m12 10-2 1c0 6 5 11 11 11l1-3-4-2-1 2c-2-1-3-2-4-4l2-1-3-4Z"/></svg>Fale conosco</a>
+      <a href="https://wa.me/5599991838887" class="nav-contact" data-bp-button="cabecalho" data-bp-city="todas" data-bp-seller="atendimento-central" target="_blank" rel="noopener noreferrer"><svg class="whatsapp-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M27 15.5a11 11 0 0 1-16.2 9.7L5 27l1.8-5.6A11 11 0 1 1 27 15.5Z"/><path d="m12 10-2 1c0 6 5 11 11 11l1-3-4-2-1 2c-2-1-3-2-4-4l2-1-3-4Z"/></svg>Fale conosco</a>
     </nav>
   </header>
   <main>
@@ -36,7 +52,7 @@
         <h2 class="hero-title">SUA SORTE TEM <span>DATA MARCADA!</span></h2>
         <p class="lead">Sorteios de segunda a sábado.<br>Adquira seu bilhete e concorra todos os dias a prêmios no Pix!</p>
         <div class="hero-actions">
-          <a class="btn btn-gold" href="https://wa.me/5599991838887" target="_blank" rel="noopener noreferrer"><svg class="whatsapp-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M27 15.5a11 11 0 0 1-16.2 9.7L5 27l1.8-5.6A11 11 0 1 1 27 15.5Z"/><path d="m12 10-2 1c0 6 5 11 11 11l1-3-4-2-1 2c-2-1-3-2-4-4l2-1-3-4Z"/></svg>WHATSAPP</a>
+          <a class="btn btn-gold" href="https://wa.me/5599991838887" data-bp-button="destaque-inicial" data-bp-city="todas" data-bp-seller="atendimento-central" target="_blank" rel="noopener noreferrer"><svg class="whatsapp-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M27 15.5a11 11 0 0 1-16.2 9.7L5 27l1.8-5.6A11 11 0 1 1 27 15.5Z"/><path d="m12 10-2 1c0 6 5 11 11 11l1-3-4-2-1 2c-2-1-3-2-4-4l2-1-3-4Z"/></svg>WHATSAPP</a>
           <a class="btn btn-outline" href="#como-funciona">COMO FUNCIONA <span class="button-chevron" aria-hidden="true"></span></a>
         </div>
       </div>
@@ -85,7 +101,7 @@
       <details><summary>Onde encontro os resultados?</summary><p>Nos canais oficiais do Bilhete Premiado.</p></details>
       <details><summary>Quem pode participar?</summary><p>Maiores de 18 anos, conforme regulamento e autorizações aplicáveis.</p></details>
     </div></section>
-    <section id="contato" class="cta"><p class="section-kicker">BILHETE PREMIADO</p><h2>QUER SABER MAIS?</h2><p>Tire suas dúvidas com nossa equipe pelo WhatsApp.</p><a href="https://wa.me/5599991838887" class="btn btn-gold" target="_blank" rel="noopener noreferrer">FALAR PELO WHATSAPP</a></section>
+    <section id="contato" class="cta"><p class="section-kicker">BILHETE PREMIADO</p><h2>QUER SABER MAIS?</h2><p>Tire suas dúvidas com nossa equipe pelo WhatsApp.</p><a href="https://wa.me/5599991838887" class="btn btn-gold" data-bp-button="chamada-final" data-bp-city="todas" data-bp-seller="atendimento-central" target="_blank" rel="noopener noreferrer">FALAR PELO WHATSAPP</a></section>
   </main>
   <footer class="footer">
     <section class="company-details" aria-labelledby="company-title">
@@ -101,7 +117,7 @@
         </div>
       </address>
     </section>
-    <p class="footer-notice">© <span id="year">2026</span> Bilhete Premiado. Conteúdo informativo. Proibido para menores de 18 anos.</p>
+    <p class="footer-notice">© <span id="year">2026</span> Bilhete Premiado. Conteúdo informativo. Proibido para menores de 18 anos. <button type="button" class="consent-manage" data-bp-consent-open>Preferências de privacidade</button></p>
   </footer>
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
